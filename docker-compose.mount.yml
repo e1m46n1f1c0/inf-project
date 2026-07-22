@@ -1,0 +1,4 @@
+services:
+  app:
+    volumes:
+      - ${CODE_PATH:-./src/website}:/var/www/html

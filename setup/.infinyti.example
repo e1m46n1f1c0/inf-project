@@ -1,0 +1,546 @@
+# Environment: Development Environment for the application
+# Description: This file contains the environment variables for the development environment
+
+################################################################################################
+# Application Configuration
+################################################################################################
+
+### Maintainer="wperez@cintanegra.net @wilodev"
+### CONFIGURACIÓN DEL PROYECTO
+CONTAINER_NAME=NOMBRE_DEL_CONTENEDOR
+PROJECT_NAME=NOMBRE_DEL_PROYECTO
+### -------------------------------- DOCKER COMPOSE --------------------------
+PROJECT_FULL_URL=BASE_URL_PROYECTO
+SERVICE_NAME_APP=NOMBRE_DEL_SERVICIO_APP_DOCKER_COMPOSE
+SERVICE_NAME_WEB=NOMBRE_DEL_SERVICIO_WEB_DOCKER_COMPOSE
+DOCKER_NETWORK_NAME=NOMBRE_DE_LA_RED_DOCKER_COMPOSE
+DATABASE_NAME=DOCKER_DATABASE_NAME
+SERVICE_DATABASE_NAME=DOCKER_SERVICE_DATABASE_NAME
+DOCKER_SERVICES="DOCKER_EXTERNAL_SERVICE_NAME,DOCKER_EXTERNAL_SERVICE_NAME"
+### -------------------------------- SSL -------------------------------------
+SSL_CERT_DOMAIN=NOMBRE_DEL_SSL_CERT
+SSL_CERT_KEY_DOMAIN=NOMBRE_DEL_SSL_CERT_KEY
+SSL_DOMAIN=NOMBRE_DEL_DOMINIO
+### -------------------------------- PHP -------------------------------------
+PHP_VERSION=VERSION_PHP
+PHP_TAG=fpm
+### -------------------------------- NGINX -----------------------------------
+NGINX_VERSION=VERSION_NGINX
+NGINX_TAG=TAG_NGINX
+FASTCGI_BUFFERS=16k
+FASTCGI_BUFFER_SIZE=64k
+FASTCGI_BUSY_BUFFERS_SIZE=128k
+FASTCGI_TEMP_FILE_WRITE_SIZE=128k
+NGINX_MAX_BODY_SIZE=64m
+### -------------------------------- RUTAS -----------------------------------
+PATH_BASE_PROJECT=PATH_BASE_DONDE_SE_EJECUTA_EL_PROYECTO
+### -------------------------------- GIT -------------------------------------
+GIT_EMAIL=EMAIL_GIT
+GIT_USERNAME=USERNAME_GIT
+
+#
+#-------------------------------------------------------------------------------
+# BOOT
+#-------------------------------------------------------------------------------
+#
+INFINYTI_KEY="4a7490c2-7004-4e8a-ab85-c877092c1484"
+
+#CRON_KEY="cron-019a2c8d-fed5-77dc-a938-3d616e2b61ad"
+
+APP_DOCS_URL=https://docs.ideasfarm.net
+
+APP_BASE_URL=#https://domain.com
+# Define el entorno de ejecución del sistema dev: desarrollo, prod: producción
+APP_ENV=dev
+
+# Define la configuración de la aplicación, si esta en true, se cacheará la
+# configuración para mejorar el rendimiento, pero se requerirá reiniciar la
+# aplicación para que los cambios en la configuración tengan efecto. En
+# desarrollo, se recomienda dejarlo en false para facilitar el desarrollo.
+APP_CONFIG_CACHE=false
+APP_PROFILE=true
+
+# Define el directorio de trabajo
+APP_WORKSPACES=front,admin,cli
+
+# Define si se debe forzar el uso de https
+APP_FORCE_HTTPS=true
+
+# Define si debe ejecutar la comprobación de permisos del rol del usuario
+APP_PERMMISIONS=false
+
+# Define el protocolo de la aplicación (https o http) por defecto si no se
+# define en el host
+APP_PROTOCOL=
+
+# Define el nombre de la aplicación de control de accesos
+ACL_APP=acl
+
+# Define si se debe tokenizar los formularios
+TOKENIZING_FORMS=false
+
+# Define si se debe tokenizar las URLs
+TOKENIZING_URLS=false
+
+# Define el nombre de la aplicación
+APP_TITLE=Infinyti
+
+# Define el idioma de la aplicación
+APP_LANG=en-US
+
+# Define la zona horaria de la aplicación
+APP_TIMEZONE=America/Guayaquil
+
+# Determina el sistema de base de datos activo
+TEMPLATE=html
+
+# Define el skin de la aplicación para frontend
+FRONT_SKIN=infinyti
+
+# Define el skin de la aplicación para administrador
+ADMIN_SKIN=pulsar
+
+# Define la clave encriptación
+SECRET=
+
+# Define el IV
+IV=
+
+# Define los países objetivo de la aplicación, usando códigos ISO 3166-1 alpha-2,
+# separados por comas. Usar 'ALL' indica operación internacional.
+# Codes: https://es.wikipedia.org/wiki/ISO_3166-1_alpha-2
+TARGET_COUNTRIES=ALL
+
+#------------------------------------ BOOT -------------------------------------
+#----------------------- CONFIGURACION DEL PROYECTO FRONTEND--------------------
+
+APP_FRONTEND=
+
+#------------------------------------ BOOT -------------------------------------
+#-------------------------------- - SESSIONS -----------------------------------
+
+# Define cómo se controla el caché en las páginas de sesión. Valores posibles:
+# nocache, public, private, private_no_expire,
+# o una cadena vacía para deshabilitar el caché.
+SESSION_CACHE_LIMITER=nocache
+
+# Tiempo de vida de la cookie de sesión en segundos. 24 horas
+SESSION_COOKIE_LIFETIME=86400
+
+# Tiempo máximo en segundos para que los datos de sesión sean almacenados.
+# 24 horas
+SESSION_GC_MAXLIFETIME=86400
+
+# Tiempo en segundos que debe pasar sin actividad para que la sesión sea
+# invalidada. 24 horas
+SESSION_INACTIVE_LIMIT=86400
+
+# Define si las cookies deben enviarse solo a través de conexiones seguras
+# (HTTPS). Valores posibles: true, false, o 'auto' para enviar solo en
+# conexiones seguras.
+SESSION_COOKIE_SECURE=true
+
+# Controla el envío de cookies junto con solicitudes entre sitios. Valores
+# posibles: None, Lax, Strict, o una cadena vacía para deshabilitar el control.
+SESSION_COOKIE_SAMESITE=lax
+
+# Si está activado (true), la cookie solo será accesible a través del protocolo
+# HTTP, lo que aumenta la seguridad al prevenir el acceso a través de scripts
+# como JavaScript.
+SESSION_COOKIE_HTTPONLY=true
+
+# Cuando está activado (true), impide el uso de identificadores de sesión no
+# inicializados, lo que puede ayudar a prevenir ciertos ataques de secuestro
+# de sesión.
+SESSION_USE_STRICT_MODE=true
+
+# Duración de la función "recordarme", en segundos.  1 semana
+SESSION_REMEMBER_ME_LIFETIME=604800
+
+# Path para la cookie para la sesión, debe ser un path absoluto
+SESSION_COOKIE_PATH="/"
+
+# Dominio para la cookie, null para el dominio actual
+SESSION_COOKIE_DOMAIN=
+
+# Si las cookies deben enviarse sin codificar url
+SESSION_COOKIE_RAW=false
+
+#-------------------------------------------------------------------------------
+# DATABASE
+#-------------------------------------------------------------------------------
+#
+
+# Define si el sistema de gestión de base de datos esta activado
+DB_ACTIVE=true
+
+# Define el ORM usado para el sistema de gestión de base de datos
+DB_MANAGER=Eloquent
+
+# MySQL Connection
+DB_CONNECTIONS=default,postgres,mongodb
+
+# Parametros para la conección por defecto
+DB_DEFAULT_MODEL=relational
+DB_DEFAULT_DRIVER=mysql
+DB_DEFAULT_HOST=
+DB_DEFAULT_DATABASE=
+DB_DEFAULT_USERNAME=
+DB_DEFAULT_PASSWORD=
+DB_DEFAULT_CHARSET=utf8mb4
+DB_DEFAULT_COLLATION=utf8mb4_unicode_ci
+DB_DEFAULT_PORT=3306
+DB_DEFAULT_PREFIX=
+
+# Parametros para la conección por defecto
+DB_POSTGRES_MODEL=relational
+DB_POSTGRES_DRIVER=mysql
+DB_POSTGRES_HOST=
+DB_POSTGRES_DATABASE=
+DB_POSTGRES_USERNAME=
+DB_POSTGRES_PASSWORD=
+DB_POSTGRES_CHARSET=utf8mb4
+DB_POSTGRES_COLLATION=utf8mb4_unicode_ci
+DB_POSTGRES_PORT=3306
+DB_POSTGRES_PREFIX=
+
+# Parametros para la conección de mongo
+DB_MONGODB_MODEL=documental
+DB_MONGODB_DRIVER=mongodb
+DB_MONGODB_DSN=
+DB_MONGODB_DATABASE=
+DB_MONGODB_OPTIONS="
+    options=200,
+    w=majority
+"
+
+#-------------------------------------------------------------------------------
+# OAUTH2
+#-------------------------------------------------------------------------------
+#
+OAUTH2_SERVER_URL= #Example. https://login.domain.com
+OAUTH2_SERVER_URL_AUTHORIZE=${OAUTH2_SERVER_URL}/oauth/2.0/authorize
+OAUTH2_SERVER_URL_ACCESS_TOKEN=${OAUTH2_SERVER_URL}/oauth/2.0/access-token
+OAUTH2_SERVER_URL_OAUTH=${OAUTH2_SERVER_URL}/signin
+OAUTH2_SERVER_URL_VERIFY_TOKEN=${OAUTH2_SERVER_URL}/oauth/2.0/verify-token
+OAUTH2_SERVER_URL_RESOURCE_OWNER=${OAUTH2_SERVER_URL}/api/1.0/users/$userId
+OAUTH2_SERVER_ENCRYPTION_KEY=
+OAUTH2_SERVER_PRIVATE_KEY=boot/env/private.key
+OAUTH2_SERVER_PUBLIC_KEY=boot/env/public.key
+
+OAUTH2_PROVIDERS=infinyti
+
+OAUTH2_INFINYTI_WORKSPACES=front,admin
+
+OAUTH2_INFINYTI_FRONT_CLIENT_ID=
+OAUTH2_INFINYTI_FRONT_CLIENT_SECRET=
+OAUTH2_INFINYTI_FRONT_REDIRECT_URI=#Example. https://client.domain.com/signin/complete
+OAUTH2_INFINYTI_FRONT_SCOPES=#Example. "openid email phone_number basic status"
+
+OAUTH2_INFINYTI_ADMIN_CLIENT_ID=
+OAUTH2_INFINYTI_ADMIN_CLIENT_SECRET=
+OAUTH2_INFINYTI_ADMIN_REDIRECT_URI= #Example. https://client2.domain.com/admin/signin/complete
+OAUTH2_INFINYTI_ADMIN_SCOPES=#Example. "openid email phone_number basic status"
+
+#-------------------------------------------------------------------------------
+# MERCURE
+#-------------------------------------------------------------------------------
+#
+MERCURE_HUB_URL=
+MERCURE_JWT_TOKEN=
+
+#-------------------------------------------------------------------------------
+# RABBIT_MQ
+#-------------------------------------------------------------------------------
+#
+RABBITMQ_HOST=
+RABBITMQ_USERNAME=
+RABBITMQ_PASSWORD=
+RABBITMQ_VHOST=
+RABBITMQ_PORT=5672
+
+#-------------------------------------------------------------------------------
+# NOTIFY_LOG
+#-------------------------------------------------------------------------------
+#
+NOTIFY_LOG_URL=
+NOTIFY_LOG_API_KEY=
+
+#-------------------------------------------------------------------------------
+# SERVICES
+#-------------------------------------------------------------------------------
+#
+APP_SERVICES="
+    operations,
+    notifications,
+    pushNotification,
+    whatsapp,
+    email,
+    socialAuth,
+    tinify,
+    getoutpdf,
+    cloudconvert,
+    mailjet,
+    recaptcha,
+    digitalOcean
+"
+
+#--------------------------------- SERVICES ------------------------------------
+#--------------------------------- OPERATIONS ----------------------------------
+#
+# Establece los servicios que se usaran en el proyecto para operaciones que
+# requieren de un servidor o servicio, almacenamiento de archivos, logs, etc.
+SERVICES_OPERATIONS=storage
+SERVICES_OPERATIONS_STORAGE=local
+
+#-------------------------------- SERVICES -------------------------------------
+#-------------------------------- NOTIFICATIONS --------------------------------
+#
+# Establece los servicios que se usaran en el proyecto para notificaciones
+SERVICES_NOTIFICATIONS_PROVIDERS=local
+SERVICES_NOTIFICATIONS_LOCAL_ENABLED=true
+
+#------------------------------- SERVICES --------------------------------------
+#------------------------------- PUSH NOTIFICATION -----------------------------
+#
+SERVICES_PUSHNOTIFICATION_PROVIDERS=pusher
+SERVICES_PUSHNOTIFICATION_PUSHER_ENABLED=false
+SERVICES_PUSHNOTIFICATION_PUSHER_APP_KEY=
+SERVICES_PUSHNOTIFICATION_PUSHER_APP_SECRET=
+SERVICES_PUSHNOTIFICATION_PUSHER_APP_ID=
+SERVICES_PUSHNOTIFICATION_PUSHER_CLUSTER=
+
+#------------------------------- SERVICES --------------------------------------
+#------------------------------- WHATSAPP -------------------------------------
+#
+SERVICES_WHATSAPP_PROVIDERS=sentwa,gramedia
+
+SERVICES_WHATSAPP_SENTWA_ENABLED=false
+SERVICES_WHATSAPP_SENTWA_ACCESS_TOKEN=
+SERVICES_WHATSAPP_SENTWA_INSTANCE_ID=
+SERVICES_WHATSAPP_SENTWA_BASE_URL=  # https://new.sentwa.com/api/
+
+SERVICES_WHATSAPP_GRAMEDIA_ENABLED=false
+SERVICES_WHATSAPP_GRAMEDIA_ACCESS_TOKEN=
+SERVICES_WHATSAPP_GRAMEDIA_INSTANCE_ID=
+SERVICES_WHATSAPP_GRAMEDIA_BASE_URL= #https://waaa-app-nlz5c.ondigitalocean.app/
+
+#------------------------------- SERVICES --------------------------------------
+#------------------------------- EMAIL -----------------------------------------
+SERVICES_EMAIL_PROVIDERS=smtp,amazonSes,mailjet,symfonyMailer
+
+SERVICES_EMAIL_FROM=#'notify@infinyti.tech'
+SERVICES_EMAIL_REPLY=#'notify@infinyti.com'
+
+SERVICES_EMAIL_SYMFONY_MAILER_ENABLED=false
+SERVICES_EMAIL_SYMFONY_MAILER_SERVER= #'smtp.example.com
+SERVICES_EMAIL_SYMFONY_MAILER_PORT= #'465'
+SERVICES_EMAIL_SYMFONY_MAILER_USERNAME= #'name@domain.com'
+SERVICES_EMAIL_SYMFONY_MAILER_PASSWORD=
+SERVICES_EMAIL_SYMFONY_MAILER_PROTOCOL= #'smtp'
+
+SERVICES_EMAIL_SMTP_ENABLED=false
+SERVICES_EMAIL_SMTP_SERVER= #'smtppro.zoho.com'
+SERVICES_EMAIL_SMTP_PORT= #'465'
+SERVICES_EMAIL_SMTP_USERNAME= #'name@domain.com'
+SERVICES_EMAIL_SMTP_PASSWORD=
+
+SERVICES_EMAIL_AMAZON_SES_ENABLED=false
+SERVICES_EMAIL_AMAZON_SES_VERSION=latest
+SERVICES_EMAIL_AMAZON_SES_KEY=
+SERVICES_EMAIL_AMAZON_SES_SECRET=
+SERVICES_EMAIL_AMAZON_SES_REGION=
+SERVICES_EMAIL_AMAZON_SES_FROM= #'notify@domain.net'
+SERVICES_EMAIL_AMAZON_SES_REPLY= #'noreplay@domain.com'
+SERVICES_EMAIL_AMAZON_SES_CHAR_SET= #'UTF-8'
+SERVICES_EMAIL_AMAZON_SES_DEBUG=false
+SERVICES_EMAIL_AMAZON_SES_TEST=false
+
+SERVICES_EMAIL_MAILJET_API_KEY_ENABLED=false
+SERVICES_EMAIL_MAILJET_API_KEY_PUBLIC=
+SERVICES_EMAIL_MAILJET_API_KEY_PRIVATE=
+SERVICES_EMAIL_MAILJET_FROM_LIST="
+    --example@email.com--=--Example Name--,
+    --from@domain.com--=--Nam from--
+" # "from@domain.com=From title"
+SERVICES_EMAIL_MAILJET_REPLAY= #'replay@domain.com'
+SERVICES_EMAIL_MAILJET_REPLAY_TITLE= #'Replay'
+SERVICES_EMAIL_MAILJET_SMTP_SERVER= #'smtppro.zoho.com'
+SERVICES_EMAIL_MAILJET_SMTP_PORT= #'465'
+
+#------------------------------- SERVICES --------------------------------------
+#------------------------------- SOCIAL AUTH -----------------------------------
+SERVICES_SOCIALAUTH_PROVIDERS=google,facebook,apple
+
+SERVICES_SOCIALAUTH_GOOGLE_ENABLED=false
+SERVICES_SOCIALAUTH_GOOGLE_ID=
+SERVICES_SOCIALAUTH_GOOGLE_SECRET=
+
+SERVICES_SOCIALAUTH_FACEBOOK_ENABLED=false
+SERVICES_SOCIALAUTH_FACEBOOK_ID=
+SERVICES_SOCIALAUTH_FACEBOOK_SECRET=
+
+SERVICES_SOCIALAUTH_APPLE_ENABLED=false
+SERVICES_SOCIALAUTH_APPLE_TEAM_ID=
+SERVICES_SOCIALAUTH_APPLE_KEY_ID=
+SERVICES_SOCIALAUTH_APPLE_KEY_CONTENT=
+
+SERVICES_SOCIALAUTH_TWITTER_ENABLED=false
+SERVICES_SOCIALAUTH_TWITTER_ID=
+SERVICES_SOCIALAUTH_TWITTER_SECRET=
+
+
+#------------------------------- SERVICES --------------------------------------
+#------------------------------- TINIFY ----------------------------------------
+# https://tinyjpg.com/developers
+SERVICES_TINIFY_ENABLED=false
+SERVICES_TINIFY_API_KEY= #'FJHlYwRwHHhgs2jKJpkymPC62s2dFZ'
+SERVICES_TINIFY_LEVEL=1
+
+#------------------------------- SERVICES --------------------------------------
+#------------------------------- GETOUTPDF -------------------------------------
+# https://getoutpdf.com/es/api/obtener-datos-cuenta/#title
+SERVICES_GETOUTPDF_ENABLED=false
+SERVICES_GETOUTPDF_API_KEY=
+SERVICES_GETOUTPDF_URL='https://getoutpdf.com/api/tool/compress-pdf'
+
+#------------------------------- SERVICES --------------------------------------
+#------------------------------- CLOUDCONVERT ----------------------------------
+# https://cloudconvert.com/api/v2
+SERVICES_CLOUDCONVERT_ENABLED=false
+SERVICES_CLOUDCONVERT_API_KEY=
+SERVICES_CLOUDCONVERT_URL='https://api.cloudconvert.com/v1/convert'
+
+#------------------------------- SERVICES --------------------------------------
+#------------------------------- RECAPTCHA -------------------------------------
+# https://developers.google.com/recaptcha
+SERVICES_RECAPTCHA_ENABLED=false
+SERVICES_RECAPTCHA_SITE_KEY=
+SERVICES_RECAPTCHA_SECRET=
+
+#------------------------------- SERVICES --------------------------------------
+#------------------------------- DIGITALOCEAN ----------------------------------
+# https://digitalocean.com
+SERVICES_DIGITALOCEAN_FILE=true
+SERVICES_DIGITALOCEAN_ENABLED=false
+SERVICES_DIGITALOCEAN_ACCESS_KEY_ID=
+SERVICES_DIGITALOCEAN_SECRET_KEY=
+SERVICES_DIGITALOCEAN_FILES_URL= #'https://subdomain.nyc3.digitaloceanspaces.com/'
+
+SERVICES_DIGITALOCEAN_PRODUCTS= #spaces,droplets
+
+SERVICES_DIGITALOCEAN_PRODUCTS_SPACES_ENABLED=false
+SERVICES_DIGITALOCEAN_PRODUCTS_SPACES_NAME= #nameSpace
+SERVICES_DIGITALOCEAN_PRODUCTS_SPACES_REGION= #nyc3
+SERVICES_DIGITALOCEAN_PRODUCTS_SPACES_URL= #https://subdomain.nyc3.digitaloceanspaces.com/
+SERVICES_DIGITALOCEAN_PRODUCTS_SPACES_HOST= #subdomain.nyc3.digitaloceanspaces.com
+
+#------------------------------- SERVICES --------------------------------------
+#-------------------------------- EDITORS --------------------------------------
+
+SERVICES_EDITORS_PROVIDERS=tinymce
+
+SERVICES_EDITORS_TINYMCE_ENABLED=false
+SERVICES_EDITORS_TINYMCE_APIKEY=
+
+#------------------------------- SERVICES --------------------------------------
+#------------------------------- CACHE REDIS -----------------------------------
+REDIS_SCHEME=tcp
+REDIS_HOST=
+REDIS_PORT=6379
+REDIS_PASSWORD=
+FILE_PATH=
+
+#-------------------------------------------------------------------------------
+# APPS
+#-------------------------------------------------------------------------------
+#
+# Ajustes personalizados para cada aplicación
+
+#-------------------------------- APPS -----------------------------------------
+#-------------------------------- PAYMENTS -------------------------------------
+# Nombre de la App creada en el proveedor de pagos
+PAYMENTS_APP_NAME=development
+# Proveedor de pagos
+PAYMENTS_APP_PROVIDER=payment
+# URL de la API de pagos
+PAYMENTS_API_URL=http://localhost:8000/api/v1/payments
+# ID del cliente Generado en el cliente de pagos
+PAYMENTS_CLIENT_ID=client_id
+# Clave secreta del cliente Generado en el cliente de pagos
+PAYMENTS_CLIENT_SECRET=client_secret
+# URL de redirección en caso de éxito
+PAYMENTS_SUCCESS_URL=subscriptions/$parameter/success
+# URL de redirección en caso de cancelación en la compra de un plan
+PAYMENTS_CANCEL_URL=$parameter/plans
+# URL de redirección en caso de cancelación en la edición de un plan
+PAYMENTS_CANCEL_EDIT_URL=$parameter/my-subscription
+# Nombre de los parámetros de redirección
+PAYMENTS_SUCCESS_PARAMETER_URL='$parameter'
+PAYMENTS_CANCEL_PARAMETER_URL='$parameter'
+# URL de redirección en caso de webhook
+PAYMENTS_WEBHOOK_URL=$param/subscriptions/webhook
+# Modo de pagos
+PAYMENTS_MODE=sandbox
+# Moneda de pagos
+PAYMENTS_CURRENCY=USD
+# Resources
+PAYMENTS_RESOURCES="
+    tickets.model= #NameSpace\\Of\\Payment\\OrdersModelResourceModel
+"
+
+#-------------------------------- SUBSCRIPTIONS ---------------------------------
+SUBSCRIPTIONS_FREE_TIME="1 month"
+
+SUBSCRIPTIONS_EXTRA_TIME_TO_PAY="4 days"
+
+#-------------------------------------------------------------------------------
+# IDEASFARM
+#-------------------------------------------------------------------------------
+IDEASFARM_START=https://dev-gramedia.ideasfarm.net/start
+IDEASFARM_FARMS=https://dev-gramedia.ideasfarm.net/farms
+IDEASFARM_INVITATIONS=https://dev-gramedia.ideasfarm.net/invitations
+
+#-------------------------------------------------------------------------------
+# APPLICATIONS
+#-------------------------------------------------------------------------------
+# ACL
+#-------------------------------------------------------------------------------
+#
+
+# Establece si el sistma de control de acceso permite OAuth2
+ACL_OAUTH2=false
+# Establece el tipo de registro de usuarios
+# ACL_REGISTER_TYPE=default
+# Establece los campos por los que se identifica usuarios en FRONT
+ACL_USER_NAME_FIELD_FRONT=username,email
+# Permite que username sea igual al email cuando registra un usuario
+# ACL_USERNAME_EQUALS_EMAIL=false
+# Permitir registro sin contraseña
+# ACL_REGISTER_WITHOUT_PASSWORD=false
+# Establece los campos por los que se identifica usuarios en ADMIN
+ACL_USER_NAME_FIELD_ADMIN=username
+# Permite iniciar sessión a usuarios que aun no activan la cuenta
+ACL_ALLOW_NO_ENABLED_USERS=true
+# Determina el tiempo en dias que pasara antes de el sistema solicite al
+# usuario activar su cuenta
+# TODO: Nueva caracteristica
+ACL_DAYS_TO_ENABLE_ACCOUNT=
+# Inica la URL de cancelación, si esta activo OAuth2
+ACL_CANCEl_URL=
+# Estable los dias que deben pasar para mostrar una alerta de cambio de
+# contraseña
+ACL_DAYS_CHANGE_PASSWORD=45
+# Url de redirección para el servidor de OAuth2 por defecto
+ACL_DEFAULT_SERVER_REDIRECT=
+
+#-------------------------------------------------------------------------------
+# ACL- Members
+#-------------------------------------------------------------------------------
+#
+# Estable una lista de recursos a los que un usuario puede ser miembro
+#
+ACL_MEMBERS_RESOURCES= #"resource-name1=NameSpace/Of/Resource1,resource-name2=NameSpace/Of/Resource2"
+ACL_MEMBERS_RESOURCES_MODELS= #"resource-name1=NameSpace/Of/Model/Resource1,resource-name2=NameSpace/Of/Model/Resource2"
+ACL_MEMBERS_INVITE_URL=
+

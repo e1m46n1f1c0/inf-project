@@ -1,0 +1,26 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: infinyti/app:8.4-alpine
+    container_name: ${CONTAINER_NAME:-ideasfarm-acl-server-prod}
+    restart: unless-stopped
+    volumes:
+      - ./setup/.infinyti:/var/www/html/.env
+      - ./setup:/var/www/html/setup
+
+    networks:
+      - private-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tier=internal"
+      - "traefik.http.routers.${APP_ENV:-prod}-${SERVICE_NAME:-acl-server}.rule=Host(`${SERVICE_HOST:-login.ideasfarm.local}`)"
+      - "traefik.http.routers.${APP_ENV:-prod}-${SERVICE_NAME:-acl-server}.entrypoints=web,websecure"
+      - "traefik.http.routers.${APP_ENV:-prod}-${SERVICE_NAME:-acl-server}.tls=true"
+      - "traefik.http.services.${APP_ENV:-prod}-${SERVICE_NAME:-acl-server}.loadbalancer.server.port=80"
+
+networks:
+  private-network:
+    external: true
+    name: private-network-${INFINYTI_NETWORK:-ideasfarm}

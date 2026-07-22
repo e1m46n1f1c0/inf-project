@@ -1,0 +1,45 @@
+# =============================================================
+# REPOS.YML — Registro de Repositorios del Proyecto
+# Usado por deploy.sh para inicializar submódulos Git.
+#
+# REPO_TYPE=MULTI_REPO: usa todas las secciones.
+# REPO_TYPE=ONE_REPO:   solo usa 'framework' (o el repo raíz).
+# =============================================================
+
+# Framework Base (Motor PHP — siempre requerido)
+framework:
+  url: git@gitlab.com:alvalab/infinyti.git
+  branch: develop
+  path: src/infinyti
+
+# Aplicaciones (montadas en src/apps/<nombre>/)
+apps:
+  acl-oauth:
+    url: git@gitlab.com:alvalab/acl-oauth.git
+    branch: develop
+    path: src/apps/acl-oauth
+  geoisys:
+    url: git@gitlab.com:alvalab/geoisys.git
+    branch: develop
+    path: src/apps/geoisys
+  cms:
+    url: git@gitlab.com:alvalab/cms.git
+    branch: develop
+    path: src/apps/cms
+  crm:
+    url: git@gitlab.com:alvalab/crm.git
+    branch: develop
+    path: src/apps/crm
+
+# Plantillas (montadas en src/templates/<tipo>/<nombre>/)
+templates:
+  front:
+    app-template:
+      url: git@gitlab.com:alvalab/app-template.git
+      branch: develop
+      path: src/templates/front/app-template
+  admin:
+    admin-template:
+      url: git@gitlab.com:alvalab/admin-template.git
+      branch: develop
+      path: src/templates/admin/admin-template
