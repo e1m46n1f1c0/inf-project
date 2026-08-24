@@ -1,56 +1,88 @@
-# =============================================================
-# Makefile — Automatización de Despliegue para Infinyti Framework
-# =============================================================
-
-.PHONY: help init build up down status restart deploy update_submodules
+.PHONY: help setup init up down build status ps logs restart refresh sh install deploy update-submodules
 
 help:
-	@echo "Uso: make [comando]"
 	@echo ""
-	@echo "Comandos disponibles:"
-	@echo "  init            - Sincroniza e inicializa los submódulos Git."
-	@echo "  build           - Construye la imagen Docker (Modo Producción)."
-	@echo "  up              - Levanta los contenedores del entorno."
-	@echo "  down            - Detiene y remueve los contenedores del entorno."
-	@echo "  status          - Muestra el estado del entorno y contenedores."
-	@echo "  restart         - Detiene y vuelve a levantar los contenedores."
-	@echo "  deploy          - [AUTOMÁTICO] Realiza todo el flujo de despliegue según el entorno."
-	@echo "  refresh         - Refresca la cache de configuración de la applicacion"
-	@echo "  update_submodules - Actualiza los submódulos Git y pregunta para confirmarlos en Git."
+	@echo "================================================================="
+	@echo "   Infinyti Framework Website - Comandos Disponibles             "
+	@echo "================================================================="
+	@echo "Ciclo de Vida & Despliegue:"
+	@echo "  make setup                Copia plantillas (.env, repos.yml, .infinyti)"
+	@echo "  make init                 Sincroniza y clona los submódulos Git"
+	@echo "  make up                   Levanta el entorno según .env"
+	@echo "  make down                 Detiene y remueve el contenedor"
+	@echo "  make build                Construye la imagen Docker inmutable"
+	@echo "  make deploy               Flujo de despliegue automático completo"
+	@echo "  make restart              Reinicia el entorno"
+	@echo "  make ps / make status     Muestra el estado del contenedor"
+	@echo "  make logs                 Sigue los logs del contenedor en tiempo real"
+	@echo ""
+	@echo "Herramientas de Desarrollo:"
+	@echo "  make refresh              Ejecuta 'php infinyti config:build'"
+	@echo "  make install              Ejecuta el script de instalación configurado"
+	@echo "  make update-submodules    Actualiza los submódulos registrados"
+	@echo "  make sh                   Abre una shell interactiva en el contenedor"
+	@echo "================================================================="
+	@echo ""
+
+setup:
+	@echo "Configurando entorno inicial de website..."
+	@[ -f .env ] && echo "  ✓ El archivo .env ya existe." || (cp .env.example .env && echo "  ✓ .env creado desde .env.example")
+	@[ -f setup/repos.yml ] && echo "  ✓ setup/repos.yml ya existe." || (cp setup/repos.yml.example setup/repos.yml && echo "  ✓ setup/repos.yml creado")
+	@[ -f setup/.infinyti ] && echo "  ✓ setup/.infinyti ya existe." || (cp setup/.infinyti.example setup/.infinyti && echo "  ✓ setup/.infinyti creado")
 
 init:
-	@git submodule update --init --recursive --force || true
-	@./deploy.sh init
-
-build:
-	@./deploy.sh build
+	@bash ./deploy.sh init
 
 up:
-	@./deploy.sh up
+	@bash ./deploy.sh up
 
 down:
-	@./deploy.sh down
+	@bash ./deploy.sh down
 
-status:
-	@./deploy.sh status
-
-restart: down up
+build:
+	@bash ./deploy.sh build
 
 deploy:
 	@echo "🚀 Iniciando despliegue automático..."
-	@git submodule update --init --recursive --force || true
-	@./deploy.sh init
-	@if grep -q "MOUNT_CODE=false" .env; then \
+	@bash ./deploy.sh init
+	@if [ -f .env ] && grep -q "MOUNT_CODE=false" .env; then \
 		echo "📦 Entorno de producción detectado (MOUNT_CODE=false). Construyendo imagen..."; \
-		./deploy.sh build; \
+		bash ./deploy.sh build; \
 	else \
 		echo "📂 Entorno de desarrollo detectado (MOUNT_CODE=true). Omitiendo construcción de imagen..."; \
 	fi
-	@./deploy.sh up
+	@bash ./deploy.sh up
 	@echo "✅ Despliegue completado con éxito!"
 
-refresh:
-	@./deploy.sh refresh
+update-submodules:
+	@bash ./scripts/update-submodules.sh
 
-update_submodules:
-	@./scripts/update-submodules.sh
+status:
+	@bash ./deploy.sh status
+
+ps:
+	@bash ./deploy.sh status
+
+logs:
+	@if [ -f .env ]; then \
+		set -o allexport; source .env; set +o allexport; \
+		CONTAINER="$${COMPOSE_PROJECT_NAME:-ideasfarm}-$${SERVICE_NAME:-website}-$${APP_ENV:-prod}"; \
+		docker logs -f "$$CONTAINER"; \
+	fi
+
+restart:
+	@make down
+	@make up
+
+refresh:
+	@bash ./deploy.sh refresh
+
+install:
+	@bash ./deploy.sh install
+
+sh:
+	@if [ -f .env ]; then \
+		set -o allexport; source .env; set +o allexport; \
+		CONTAINER="$${COMPOSE_PROJECT_NAME:-ideasfarm}-$${SERVICE_NAME:-website}-$${APP_ENV:-prod}"; \
+		docker exec -it "$$CONTAINER" sh; \
+	fi

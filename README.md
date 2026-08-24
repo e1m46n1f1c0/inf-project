@@ -42,7 +42,7 @@ Dependiendo del tipo de repositorio definido en `.env`, edita el archivo `setup/
 En este modo, solo se requiere definir la sección `framework` apuntando al repositorio monolítico. El código de la aplicación se descargará en la ruta indicada:
 ```yaml
 framework:
-  url: git@gitlab.com:ideasfarm/website.git
+  url: git@gitlab.com:alvalab/website.git
   branch: main
   path: src/website
 ```
