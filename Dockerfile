@@ -1,6 +1,9 @@
 # Imagen de Producción para Infinyti Framework
 FROM infinyti/app:8.4-alpine
 
+# Instalar dependencias y extensión intl de PHP para fechas/localización
+RUN apk add --no-cache icu-dev && docker-php-ext-install intl
+
 # Establecer directorio de trabajo
 WORKDIR /var/www/html
 

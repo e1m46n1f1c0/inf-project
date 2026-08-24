@@ -30,7 +30,7 @@ SERVICE_SUBDOMAIN="${SERVICE_SUBDOMAIN-login}"
 MOUNT_CODE="${MOUNT_CODE:-true}"
 
 if [ "$APP_ENV" = "prod" ]; then
-  COMPOSE_PROJECT_NAME_ENV="${COMPOSE_PROJECT_NAME}"
+  COMPOSE_PROJECT_NAME_ENV="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}"
   CONTAINER_NAME="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${APP_ENV}"
   if [ -n "${SERVICE_SUBDOMAIN}" ]; then
     SERVICE_HOST="${SERVICE_SUBDOMAIN}.${CLIENT_DOMAIN}"
@@ -38,8 +38,8 @@ if [ "$APP_ENV" = "prod" ]; then
     SERVICE_HOST="${CLIENT_DOMAIN}"
   fi
 else
-  COMPOSE_PROJECT_NAME_ENV="${COMPOSE_PROJECT_NAME}-${APP_ENV}"
-  CONTAINER_NAME="${COMPOSE_PROJECT_NAME}-${APP_ENV}-${SERVICE_NAME}-${APP_ENV}"
+  COMPOSE_PROJECT_NAME_ENV="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${APP_ENV}"
+  CONTAINER_NAME="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${APP_ENV}"
   if [ -n "${SERVICE_SUBDOMAIN}" ]; then
     SERVICE_HOST="${APP_ENV}-${SERVICE_SUBDOMAIN}.${CLIENT_DOMAIN}"
   else
@@ -120,7 +120,7 @@ def process_entry(name, info):
         return
 
     print(f'\n📌 Submódulo: {name} ({path}) -> rama: {branch}')
-    
+
     if not os.path.exists('.gitmodules'):
         open('.gitmodules', 'a').close()
         subprocess.run(['git', 'add', '.gitmodules'], check=False)
@@ -157,6 +157,17 @@ def run_process(data):
 run_process(data)
 "
   echo -e "\n${GREEN}✅ Submódulos sincronizados según repos.yml.${NC}"
+
+  if [ ! -f ".gitmodules" ] || ! grep -q "\[submodule" .gitmodules 2>/dev/null; then
+    echo -e "${YELLOW}ℹ️ No se detectaron submódulos registrados.${NC}"
+    read -p "¿Deseas crear la carpeta src/ localmente para montar código desde el anfitrión? [s/N]: " create_src </dev/tty
+    if [[ "$create_src" =~ ^([sS][iI]|[sS])$ ]]; then
+      mkdir -p src
+      echo -e "${GREEN}✓ Carpeta src/ creada y lista para montar código local.${NC}"
+      python3 -c "import sys; content=open(sys.argv[1]).read(); content=content.replace('MOUNT_CODE=false', 'MOUNT_CODE=true'); open(sys.argv[1], 'w').write(content)" .env
+      echo -e "${GREEN}✓ MOUNT_CODE=true configurado en .env.${NC}"
+    fi
+  fi
 }
 
 COMPOSE_FILES=("-f" "docker-compose.yml")
@@ -196,9 +207,11 @@ env_up() {
   if [ "${MOUNT_CODE:-true}" != "true" ]; then
     if [ -d "src" ]; then
       echo -e "  ${YELLOW}🗑️  Eliminando directorio src local (MOUNT_CODE=false)...${NC}"
-      rm -rf src
+    #   docker run --rm -v "$PWD":/app alpine rm -rf /app/src
     fi
   fi
+
+  env_install
 
   echo -e "  ${GREEN}✅ Entorno ${APP_ENV} activo en: https://${SERVICE_HOST}${NC}"
 }
@@ -212,11 +225,6 @@ env_down() {
   CONTAINER_NAME="$CONTAINER_NAME" \
   docker compose "${COMPOSE_FILES[@]}" -p "$COMPOSE_PROJECT_NAME_ENV" down
   echo -e "  ${GREEN}✅ Entorno ${APP_ENV} detenido.${NC}"
-}
-
-env_status() {
-  echo -e "${BOLD}📊 Estado del entorno:${NC}"
-  docker compose "${COMPOSE_FILES[@]}" -p "$COMPOSE_PROJECT_NAME_ENV" ps
 }
 
 env_install() {
@@ -236,6 +244,20 @@ env_install() {
   fi
 }
 
+env_status() {
+  echo -e "${BOLD}📊 Estado del entorno:${NC}"
+  docker compose "${COMPOSE_FILES[@]}" -p "$COMPOSE_PROJECT_NAME_ENV" ps
+}
+
+env_refresh() {
+  echo -e "${BOLD}📊 Refrescando Configuración:${NC}"
+  docker exec -i "${CONTAINER_NAME}" php infinyti config:build
+}
+
+env_init_ideasfarm() {
+  docker exec -i "${COMCONTAINER_NAME}" php infinyti horizon --eval "DB::table('aml_animals_status')->count()"
+}
+
 case "$ACTION" in
   up) env_up ;;
   down) env_down ;;
@@ -243,6 +265,7 @@ case "$ACTION" in
   build) env_build ;;
   init) env_init ;;
   install) env_install ;;
+  refresh) env_refresh ;;
   *)
     echo -e "${RED}❌ Acción desconocida: ${ACTION}${NC}"
     echo "   Uso: ./deploy.sh [up|down|status|build|init|install]"

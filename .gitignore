@@ -1,0 +1,13 @@
+# Environment files
+.env
+setup/.infinyti
+setup/clients.json
+setup/register.json
+setup/repos.yml
+
+# OS files
+.DS_Store
+*.log
+
+# Exclude independent docker-php-app repo
+docker-php-app/

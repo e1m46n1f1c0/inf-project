@@ -10,7 +10,7 @@ Este repositorio es una plantilla base (orquestador) diseñada para estructurar,
 ## 🛠 Requisitos Previos
 
 - Docker y Docker Compose
-- Acceso SSH configurado en GitLab (u otros repositorios remotos registrados)
+- Acceso SSH configurado en GitLab/Guthub (u otros repositorios remotos registrados)
 - Python 3 (requerido por `deploy.sh` para procesar el archivo YAML de configuración de repositorios)
 
 ---

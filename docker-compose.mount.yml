@@ -2,3 +2,4 @@ services:
   app:
     volumes:
       - ${CODE_PATH:-./src/website}:/var/www/html
+      - /home/mavo/.local/share/mkcert/rootCA.pem:/etc/ssl/certs/rootCA.pem:ro

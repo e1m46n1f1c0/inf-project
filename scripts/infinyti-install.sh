@@ -20,11 +20,7 @@ COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-ideasfarm}"
 SERVICE_NAME="${SERVICE_NAME:-acl-server}"
 APP_ENV="${APP_ENV:-prod}"
 
-if [ "$APP_ENV" = "prod" ]; then
-  CONTAINER="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${APP_ENV}"
-else
-  CONTAINER="${COMPOSE_PROJECT_NAME}-${APP_ENV}-${SERVICE_NAME}-${APP_ENV}"
-fi
+CONTAINER="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${APP_ENV}"
 
 echo "🚀 Iniciando instalación y configuración del entorno Infinyti..."
 echo "🐳 Contenedor objetivo: $CONTAINER"
@@ -50,12 +46,64 @@ if [ ! -f setup/clients.json ] && [ -f setup/clients.json.example ]; then
     cp setup/clients.json.example setup/clients.json
 fi
 
-# 5. Levantar el contenedor en background (por si no está activo)
-echo "🐳 Asegurando que los contenedores de Docker estén activos..."
-docker compose up -d
 
-# Esperar un par de segundos para que el contenedor esté listo
-sleep 3
+# =================================================================
+# GESTIÓN DE DIRECTORIOS Y PERMISOS (DYNAMIC)
+# =================================================================
+# Determinar directorio raíz del framework en el host
+if [ "${REPO_TYPE:-MULTI_REPO}" = "ONE_REPO" ]; then
+    FW_DIR="src"
+else
+    FW_DIR="src/infinyti"
+fi
+
+# Array de directorios a crear y otorgar permisos (Ruta:Permisos)
+DIR_PERMISSIONS=(
+    "${FW_DIR}/logs:777"
+    "${FW_DIR}/temp:777"
+    "${FW_DIR}/public/assets:777"
+    "${FW_DIR}/public/images:777"
+    "${FW_DIR}/public/files:777"
+)
+
+echo "📁 Configurando directorios de escritura y permisos..."
+for item in "${DIR_PERMISSIONS[@]}"; do
+    # Separar ruta y permisos
+    DIR_PATH="${item%%:*}"
+    PERMS="${item##*:}"
+
+    # 1. Gestión en el Host (si MOUNT_CODE es true)
+    if [ "${MOUNT_CODE:-true}" = "true" ]; then
+        if [ ! -d "$DIR_PATH" ]; then
+            echo "  ➕ Creando directorio local (host): $DIR_PATH"
+            mkdir -p "$DIR_PATH" 2>/dev/null || true
+        fi
+        echo "  🔒 Asignando permisos $PERMS local (host): $DIR_PATH"
+        chmod "$PERMS" "$DIR_PATH" 2>/dev/null || true
+    fi
+
+    # 2. Gestión dentro del contenedor (Traducción de ruta a /var/www/html)
+    RELATIVE_PATH="${DIR_PATH#$FW_DIR/}"
+    CONTAINER_PATH="/var/www/html/${RELATIVE_PATH}"
+
+    echo "  🐳 Asegurando directorio dentro del contenedor: $CONTAINER_PATH ($PERMS)"
+    docker exec -i $CONTAINER sh -c "
+        if [ ! -d \"$CONTAINER_PATH\" ]; then
+            mkdir -p \"$CONTAINER_PATH\"
+        fi
+        chmod \"$PERMS\" \"$CONTAINER_PATH\"
+    "
+done
+# =================================================================
+# CONFIANZA DE CERTIFICADOS SSL EN DESARROLLO (MKCERT)
+# =================================================================
+if docker exec -i $CONTAINER [ -f /etc/ssl/certs/rootCA.pem ]; then
+    echo "🛡️  Registrando Root CA de mkcert en la lista de confianza del contenedor..."
+    docker exec -i $CONTAINER sh -c "cp /etc/ssl/certs/rootCA.pem /usr/local/share/ca-certificates/rootCA.crt && update-ca-certificates"
+fi
+# =================================================================
+
+
 
 # 6. Ejecutar composer install dentro del contenedor
 echo "📦 Instalando dependencias con Composer..."
@@ -67,8 +115,8 @@ if docker exec -i $CONTAINER [ -d /var/www/html/apps-default/start ]; then
     docker exec -i $CONTAINER sh -c "cp -r /var/www/html/apps-default/start /var/www/html/apps/"
 fi
 
-if [ ! -f register.json ]; then
-    cat <<EOF > register.json
+if [ ! -f setup/register.json ]; then
+    cat <<EOF > setup/register.json
 {
     "acl": "acl-oauth/",
     "geoisys": "geoisys/",
@@ -84,7 +132,31 @@ if docker exec -i $CONTAINER [ -f "/var/www/html/infinyti" ]; then
     echo "♻️  Limpiando caché del framework..."
     docker exec -i $CONTAINER sh -c "cd /var/www/html && php infinyti config:refresh --no-interaction || rm -f boot/kernel_state.php"
 
+    # Evitar fallos de duplicados en el seeder de roles si ya fue ejecutado anteriormente
+    if [ -f "src/apps/acl-oauth/db/seeds/RolesFront.php" ]; then
+        echo "🔧 Aplicando parche de idempotencia a RolesFront.php..."
+        python3 -c '
+import os
+file_path = "src/apps/acl-oauth/db/seeds/RolesFront.php"
+if os.path.exists(file_path):
+    with open(file_path, "r") as f:
+        content = f.read()
+    old_str = "$table->insert($data)->saveData();"
+    new_str = """foreach ($data as $row) {
+            $exists = $this->fetchRow("SELECT 1 FROM acl_roles WHERE id = \x27" . $row[\x27id\x27] . "\x27");
+            if (!$exists) {
+                $table->insert([$row])->saveData();
+            }
+        }"""
+    if old_str in content:
+        with open(file_path, "w") as f:
+            f.write(content.replace(old_str, new_str))
+'
+    fi
+
     docker exec -i $CONTAINER sh -c "cd /var/www/html && php infinyti db:migrate --no-interaction"
+
+    docker exec -i $CONTAINER sh -c "cd /var/www/html && php infinyti db:seed --no-interaction"
 
     echo "🔗 Vinculando recursos estáticos (assets)..."
     docker exec -i $CONTAINER sh -c "cd /var/www/html && php infinyti assets:link --no-interaction"
@@ -106,6 +178,18 @@ fi
 if docker exec -i $CONTAINER [ -f "/var/www/html/infinyti" ] && [ -f "setup/clients.json" ]; then
     echo "⚙️  Verificando clientes de ACL pre-configurados..."
     docker exec -i $CONTAINER sh -c "cd /var/www/html && php infinyti acl:register-clients --file=/var/www/html/setup/clients.json --no-interaction" 2>/dev/null || true
+fi
+
+# 11. Configuración de tareas programadas (cron)
+if docker exec -i $CONTAINER [ -f "/var/www/html/infinyti" ]; then
+    echo "⏰ Configurando tareas programadas (cron)..."
+    docker exec -i $CONTAINER sh -c "cd /var/www/html && php infinyti setup:cron --no-interaction" 2>/dev/null || true
+fi
+
+# 12. Recargar PHP-FPM para limpiar OPcache (cero caída)
+if docker exec -i $CONTAINER pgrep -o php-fpm >/dev/null 2>&1; then
+    echo "♻️  Recargando PHP-FPM para limpiar OPcache..."
+    docker exec -i $CONTAINER sh -c "kill -USR2 \$(pgrep -o php-fpm)"
 fi
 
 echo "✨ Configuración completada."

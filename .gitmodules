@@ -1,0 +1,76 @@
+[submodule "src/infinyti"]
+	path = src/infinyti
+	url = git@gitlab.com:alvalab/infinyti.git
+	branch = develop
+[submodule "src/apps/acl-oauth"]
+	path = src/apps/acl-oauth
+	url = git@gitlab.com:infinity-plf/acl-oauth.git
+	branch = develop
+[submodule "src/apps/animals"]
+	path = src/apps/animals
+	url = git@gitlab.com:ideasfarm/animals.git
+	branch = develop
+[submodule "src/apps/auctions"]
+	path = src/apps/auctions
+	url = git@gitlab.com:ideasfarm/auctions.git
+	branch = develop
+[submodule "src/apps/calendar"]
+	path = src/apps/calendar
+	url = git@gitlab.com:ideasfarm/calendar.git
+	branch = develop
+[submodule "src/apps/costs"]
+	path = src/apps/costs
+	url = git@gitlab.com:ideasfarm/costs.git
+	branch = develop
+[submodule "src/apps/geoisys"]
+	path = src/apps/geoisys
+	url = git@gitlab.com:infinity-plf/geoisys.git
+	branch = develop
+[submodule "src/apps/if-core"]
+	path = src/apps/if-core
+	url = git@gitlab.com:ideasfarm/if-core.git
+	branch = develop
+[submodule "src/apps/indexes"]
+	path = src/apps/indexes
+	url = git@gitlab.com:ideasfarm/indexes.git
+	branch = develop
+[submodule "src/apps/inventory"]
+	path = src/apps/inventory
+	url = git@gitlab.com:ideasfarm/inventory.git
+	branch = develop
+[submodule "src/apps/notifications"]
+	path = src/apps/notifications
+	url = git@gitlab.com:ideasfarm/notifications.git
+	branch = develop
+[submodule "src/apps/paddocks"]
+	path = src/apps/paddocks
+	url = git@gitlab.com:ideasfarm/paddocks.git
+	branch = develop
+[submodule "src/apps/payments"]
+	path = src/apps/payments
+	url = git@gitlab.com:infinity-plf/payments.git
+	branch = develop
+[submodule "src/apps/protocols"]
+	path = src/apps/protocols
+	url = git@gitlab.com:ideasfarm/protocols.git
+	branch = develop
+[submodule "src/apps/providers"]
+	path = src/apps/providers
+	url = git@gitlab.com:ideasfarm/providers.git
+	branch = develop
+[submodule "src/apps/reports"]
+	path = src/apps/reports
+	url = git@gitlab.com:ideasfarm/reports.git
+	branch = develop
+[submodule "src/apps/start-if"]
+	path = src/apps/start-if
+	url = git@gitlab.com:ideasfarm/start-if.git
+	branch = develop
+[submodule "src/apps/weather"]
+	path = src/apps/weather
+	url = git@gitlab.com:ideasfarm/weather.git
+	branch = develop
+[submodule "src/templates/front/ideasfarm-template"]
+	path = src/templates/front/ideasfarm-template
+	url = git@gitlab.com:ideasfarm/ideasfarm-template.git
+	branch = develop

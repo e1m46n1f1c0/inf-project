@@ -9,6 +9,9 @@ services:
     volumes:
       - ./setup/.infinyti:/var/www/html/.env
       - ./setup:/var/www/html/setup
+      - ./setup/custom-php.ini:/usr/local/etc/php/conf.d/custom-php.ini:ro
+    environment:
+      - APP_ENV=${APP_ENV:-prod}
 
     networks:
       - private-network
@@ -19,6 +22,7 @@ services:
       - "traefik.http.routers.${APP_ENV:-prod}-${SERVICE_NAME:-acl-server}.entrypoints=web,websecure"
       - "traefik.http.routers.${APP_ENV:-prod}-${SERVICE_NAME:-acl-server}.tls=true"
       - "traefik.http.services.${APP_ENV:-prod}-${SERVICE_NAME:-acl-server}.loadbalancer.server.port=80"
+      - "traefik.http.routers.${APP_ENV:-prod}-${SERVICE_NAME:-acl-server}.tls.certresolver=letsencrypt"
 
 networks:
   private-network:
