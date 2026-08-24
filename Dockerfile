@@ -1,14 +1,20 @@
-# Imagen de Producción para Infinyti Framework
-FROM infinyti/app:8.4-alpine
+# Imagen de Producción para Infinyti Framework / Website
+FROM php:8.3-apache
 
-# Instalar dependencias y extensión intl de PHP para fechas/localización
-RUN apk add --no-cache icu-dev && docker-php-ext-install intl
+# Habilitar mod_rewrite de Apache para URLs amigables
+RUN a2enmod rewrite
+
+# Instalar dependencias y extensiones comunes de PHP si son requeridas
+RUN apt-get update && apt-get install -y \
+    libicu-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    && docker-php-ext-install intl opcache \
+    && rm -rf /var/lib/apt/lists/*
 
 # Establecer directorio de trabajo
 WORKDIR /var/www/html
 
-# Copiar el código de la aplicación al contenedor (Inmutabilidad para Producción)
-COPY ./src/website /var/www/html
-
-# Si existe archivo .infinyti de setup se puede sincronizar
-# COPY ./setup/.infinyti /var/www/html/.env
+# Copiar el código de la aplicación al contenedor (para Producción inmutable)
+COPY ./src /var/www/html
