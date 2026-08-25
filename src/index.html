@@ -33,12 +33,15 @@
   <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" />
   <style>
     :root {
-      --bg-dark: #090d16;
-      --card-bg: rgba(18, 24, 38, 0.7);
+      --bg-dark: #070a0f;
+      --card-bg: rgba(13, 17, 24, 0.78);
       --card-border: rgba(255, 255, 255, 0.08);
-      --primary: #3b82f6;
-      --primary-glow: rgba(59, 130, 246, 0.4);
-      --accent: #8b5cf6;
+      --card-border-glow: rgba(230, 97, 19, 0.25);
+      --primary: #e66113;
+      --primary-glow: rgba(230, 97, 19, 0.38);
+      --accent: #cc3233;
+      --accent-glow: rgba(204, 50, 51, 0.28);
+      --amber-glow: rgba(245, 158, 11, 0.18);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
     }
@@ -63,31 +66,56 @@
       padding: 1.5rem;
     }
 
-    /* Animated background glow */
+    /* Ambient dynamic glow background */
     .glow-bg {
       position: absolute;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, var(--primary-glow) 0%, rgba(139, 92, 246, 0.15) 45%, transparent 70%);
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, var(--primary-glow) 0%, var(--accent-glow) 40%, var(--amber-glow) 60%, transparent 75%);
       border-radius: 50%;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      filter: blur(80px);
+      filter: blur(90px);
       z-index: 0;
       pointer-events: none;
-      animation: pulse 8s ease-in-out infinite alternate;
+      animation: pulse 9s ease-in-out infinite alternate;
+    }
+
+    .glow-secondary {
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(204, 50, 51, 0.2) 0%, rgba(230, 97, 19, 0.1) 50%, transparent 70%);
+      border-radius: 50%;
+      top: 30%;
+      left: 55%;
+      transform: translate(-50%, -50%);
+      filter: blur(75px);
+      z-index: 0;
+      pointer-events: none;
+      animation: float 12s ease-in-out infinite alternate;
     }
 
     @keyframes pulse {
       0% {
         transform: translate(-50%, -50%) scale(0.85);
-        opacity: 0.7;
+        opacity: 0.65;
       }
 
       100% {
-        transform: translate(-50%, -50%) scale(1.15);
-        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.18);
+        opacity: 0.95;
+      }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate(-45%, -45%) scale(0.9);
+      }
+
+      100% {
+        transform: translate(-55%, -55%) scale(1.1);
       }
     }
 
@@ -96,8 +124,8 @@
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
       background-size: 40px 40px;
       z-index: 0;
       pointer-events: none;
@@ -110,13 +138,14 @@
       width: 100%;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border-radius: 28px;
       padding: 3.5rem 2.5rem;
       text-align: center;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.05);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 0 35px -10px var(--primary-glow);
       animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -138,9 +167,9 @@
       gap: 0.5rem;
       padding: 0.4rem 1rem;
       border-radius: 9999px;
-      background: rgba(59, 130, 246, 0.1);
-      border: 1px solid rgba(59, 130, 246, 0.25);
-      color: #60a5fa;
+      background: rgba(230, 97, 19, 0.12);
+      border: 1px solid rgba(230, 97, 19, 0.3);
+      color: #fb923c;
       font-size: 0.825rem;
       font-weight: 600;
       margin-bottom: 2rem;
@@ -150,9 +179,9 @@
     .status-dot {
       width: 8px;
       height: 8px;
-      background-color: #3b82f6;
+      background-color: var(--primary);
       border-radius: 50%;
-      box-shadow: 0 0 12px #3b82f6;
+      box-shadow: 0 0 12px var(--primary);
       animation: blink 2s infinite;
     }
 
@@ -171,10 +200,16 @@
     }
 
     .brand-logo {
-      height: 48px;
+      height: 52px;
       width: auto;
-      margin-bottom: 1.5rem;
-      filter: drop-shadow(0 4px 12px rgba(230, 97, 19, 0.25));
+      margin-bottom: 1.75rem;
+      filter: drop-shadow(0 6px 16px rgba(230, 97, 19, 0.35));
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .brand-logo:hover {
+      transform: scale(1.03);
+      filter: drop-shadow(0 8px 24px rgba(230, 97, 19, 0.5));
     }
 
     .brand {
@@ -189,7 +224,7 @@
     }
 
     .brand span {
-      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      background: linear-gradient(135deg, #fb923c 0%, #e11d48 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -216,6 +251,14 @@
       flex-direction: column;
       align-items: center;
       gap: 0.35rem;
+      padding: 0.75rem 0.5rem;
+      border-radius: 14px;
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+
+    .feature-item:hover {
+      background: rgba(255, 255, 255, 0.03);
+      transform: translateY(-2px);
     }
 
     .feature-icon {
@@ -251,7 +294,7 @@
 
       .features {
         grid-template-columns: 1fr;
-        gap: 1.25rem;
+        gap: 0.75rem;
       }
     }
   </style>
@@ -259,6 +302,7 @@
 
 <body>
   <div class="glow-bg"></div>
+  <div class="glow-secondary"></div>
   <div class="grid-overlay"></div>
 
   <main class="container">
@@ -271,7 +315,7 @@
       <img src="/assets/images/logo/logo-dark.svg" alt="Miguel Valencia" class="brand-logo" />
     </div>
 
-    <h1 class="brand">mvalencia<span>.pro</span></h1>
+    <h1 hidden class="brand">mvalencia<span>.pro</span></h1>
 
     <p class="tagline">
       Estamos construyendo nuestra nueva plataforma digital de alta ingeniería e infraestructura. Muy pronto disponible.
