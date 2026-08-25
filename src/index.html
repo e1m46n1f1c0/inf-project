@@ -1,348 +1,882 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>mvalencia.pro — Próximamente</title>
+  <title>Miguel Ángel Valencia Ortiz — Director de TI & Arquitecto de Software</title>
+  <meta name="description" content="Portfolio y trayectoria profesional de Miguel Ángel Valencia Ortiz: Director de TI, Arquitecto de Software & Cloud, Diseño de Producto y Soluciones de Inteligencia Artificial.">
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- 1. SVG Dinámico (Adaptable en navegadores modernos) -->
+  <!-- Favicon & PWA Suite -->
   <link rel="icon" type="image/svg+xml" href="/assets/images/favicon/favicon.svg" />
-
-  <!-- 2. PNGs específicos según el tema del SO (Navegadores basados en Chromium/Firefox) -->
-  <link rel="icon" type="image/png" href="/assets/images/favicon/favicon-dark.png" media="(prefers-color-scheme: dark)"
-    sizes="96x96" />
-  <link rel="icon" type="image/png" href="/assets/images/favicon/favicon-light.png"
-    media="(prefers-color-scheme: light)" sizes="96x96" />
-
-  <!-- 3. iOS / Apple (Pantalla de inicio) -->
+  <link rel="icon" type="image/png" href="/assets/images/favicon/favicon-dark.png" media="(prefers-color-scheme: dark)" sizes="96x96" />
+  <link rel="icon" type="image/png" href="/assets/images/favicon/favicon-light.png" media="(prefers-color-scheme: light)" sizes="96x96" />
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="MValencia" />
-
-  <!-- 4. Android / PWA (Barra de estado del sistema y Web App Manifest) -->
   <link rel="manifest" href="/assets/images/favicon/site.webmanifest" />
   <meta name="theme-color" content="#090d16" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-
-  <!-- 5. Fallback tradicional -->
   <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" />
-  <style>
-    :root {
-      --bg-dark: #070a0f;
-      --card-bg: rgba(13, 17, 24, 0.78);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --card-border-glow: rgba(230, 97, 19, 0.25);
-      --primary: #e66113;
-      --primary-glow: rgba(230, 97, 19, 0.38);
-      --accent: #cc3233;
-      --accent-glow: rgba(204, 50, 51, 0.28);
-      --amber-glow: rgba(245, 158, 11, 0.18);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-    }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      overflow-x: hidden;
-      position: relative;
-      padding: 1.5rem;
-    }
-
-    /* Ambient dynamic glow background */
-    .glow-bg {
-      position: absolute;
-      width: 650px;
-      height: 650px;
-      background: radial-gradient(circle, var(--primary-glow) 0%, var(--accent-glow) 40%, var(--amber-glow) 60%, transparent 75%);
-      border-radius: 50%;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      filter: blur(90px);
-      z-index: 0;
-      pointer-events: none;
-      animation: pulse 9s ease-in-out infinite alternate;
-    }
-
-    .glow-secondary {
-      position: absolute;
-      width: 450px;
-      height: 450px;
-      background: radial-gradient(circle, rgba(204, 50, 51, 0.2) 0%, rgba(230, 97, 19, 0.1) 50%, transparent 70%);
-      border-radius: 50%;
-      top: 30%;
-      left: 55%;
-      transform: translate(-50%, -50%);
-      filter: blur(75px);
-      z-index: 0;
-      pointer-events: none;
-      animation: float 12s ease-in-out infinite alternate;
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: translate(-50%, -50%) scale(0.85);
-        opacity: 0.65;
-      }
-
-      100% {
-        transform: translate(-50%, -50%) scale(1.18);
-        opacity: 0.95;
-      }
-    }
-
-    @keyframes float {
-      0% {
-        transform: translate(-45%, -45%) scale(0.9);
-      }
-
-      100% {
-        transform: translate(-55%, -55%) scale(1.1);
-      }
-    }
-
-    /* Grid pattern */
-    .grid-overlay {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-      background-size: 40px 40px;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      max-width: 620px;
-      width: 100%;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-radius: 28px;
-      padding: 3.5rem 2.5rem;
-      text-align: center;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6),
-        0 0 0 1px rgba(255, 255, 255, 0.05),
-        0 0 35px -10px var(--primary-glow);
-      animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.4rem 1rem;
-      border-radius: 9999px;
-      background: rgba(230, 97, 19, 0.12);
-      border: 1px solid rgba(230, 97, 19, 0.3);
-      color: #fb923c;
-      font-size: 0.825rem;
-      font-weight: 600;
-      margin-bottom: 2rem;
-      letter-spacing: 0.02em;
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      background-color: var(--primary);
-      border-radius: 50%;
-      box-shadow: 0 0 12px var(--primary);
-      animation: blink 2s infinite;
-    }
-
-    @keyframes blink {
-
-      0%,
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 0.4;
-        transform: scale(0.85);
-      }
-    }
-
-    .brand-logo {
-      height: 52px;
-      width: auto;
-      margin-bottom: 1.75rem;
-      filter: drop-shadow(0 6px 16px rgba(230, 97, 19, 0.35));
-      transition: transform 0.3s ease, filter 0.3s ease;
-    }
-
-    .brand-logo:hover {
-      transform: scale(1.03);
-      filter: drop-shadow(0 8px 24px rgba(230, 97, 19, 0.5));
-    }
-
-    .brand {
-      font-family: 'Outfit', sans-serif;
-      font-size: 2.75rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .brand span {
-      background: linear-gradient(135deg, #fb923c 0%, #e11d48 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .tagline {
-      font-size: 1.15rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 2.5rem;
-      font-weight: 400;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-top: 2rem;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .feature-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.75rem 0.5rem;
-      border-radius: 14px;
-      transition: background 0.25s ease, transform 0.25s ease;
-    }
-
-    .feature-item:hover {
-      background: rgba(255, 255, 255, 0.03);
-      transform: translateY(-2px);
-    }
-
-    .feature-icon {
-      font-size: 1.4rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .feature-title {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #e2e8f0;
-    }
-
-    .feature-desc {
-      font-size: 0.75rem;
-      color: #64748b;
-    }
-
-    .footer-note {
-      margin-top: 2rem;
-      font-size: 0.8rem;
-      color: #475569;
-    }
-
-    @media (max-width: 640px) {
-      .container {
-        padding: 2.5rem 1.5rem;
-      }
-
-      .brand {
-        font-size: 2.2rem;
-      }
-
-      .features {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-      }
-    }
-  </style>
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 
 <body>
-  <div class="glow-bg"></div>
-  <div class="glow-secondary"></div>
-  <div class="grid-overlay"></div>
+  <!-- Ambient Background Lighting -->
+  <div class="ambient-background">
+    <div class="grid-overlay"></div>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+    <div class="glow-orb glow-orb-3"></div>
+  </div>
 
-  <main class="container">
-    <div class="status-badge">
-      <span class="status-dot"></span>
-      Próximamente
-    </div>
+  <!-- Header / Navbar -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#hero" class="nav-brand" aria-label="Miguel Valencia">
+        <img src="/assets/images/logo/logo-dark.svg" alt="Miguel Valencia" class="nav-logo-img">
+      </a>
 
-    <div>
-      <img src="/assets/images/logo/logo-dark.svg" alt="Miguel Valencia" class="brand-logo" />
-    </div>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#sobre-mi" class="nav-link">Sobre Mí</a></li>
+        <li><a href="#experiencia" class="nav-link">Experiencia</a></li>
+        <li><a href="#proyectos" class="nav-link">Proyectos</a></li>
+        <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
+        <li><a href="#certificaciones" class="nav-link">Certificaciones</a></li>
+        <li><a href="#educacion" class="nav-link">Educación</a></li>
+        <li><a href="#contacto" class="nav-link">Contacto</a></li>
+      </ul>
 
-    <h1 hidden class="brand">mvalencia<span>.pro</span></h1>
-
-    <p class="tagline">
-      Estamos construyendo nuestra nueva plataforma digital de alta ingeniería e infraestructura. Muy pronto disponible.
-    </p>
-
-    <div class="features">
-      <div class="feature-item">
-        <span class="feature-icon">⚡</span>
-        <span class="feature-title">Alto Rendimiento</span>
-        <span class="feature-desc">Arquitectura optimizada</span>
+      <div class="nav-actions">
+        <a href="https://wa.me/593997631577?text=Hola%20Miguel,%20vi%20tu%20sitio%20web%20mvalencia.pro%20y%20me%20gustar%C3%ADa%20conversar." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+          <span>💬 WhatsApp</span>
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
       </div>
-      <div class="feature-item">
-        <span class="feature-icon">🛡️</span>
-        <span class="feature-title">Seguridad Zero Trust</span>
-        <span class="feature-desc">Protección integral</span>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">✨</span>
-        <span class="feature-title">Nueva Experiencia</span>
-        <span class="feature-desc">Lanzamiento inminente</span>
-      </div>
-    </div>
+    </nav>
+  </header>
 
-    <footer class="footer-note">
-      &copy; 2026 mvalencia.pro — Todos los derechos reservados.
-    </footer>
+  <main>
+    <!-- 1. Hero Section -->
+    <section class="hero" id="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="status-badge">
+              <span class="status-dot"></span>
+              Disponible para Proyectos & Consultoría Tecnológica
+            </div>
+
+            <h1 class="hero-title">
+              <span class="hero-title-highlight">MIGUEL ÁNGEL</span>
+              <span class="hero-title-highlight">VALENCIA ORTIZ</span>
+              <span class="hero-title-sub">Director de TI | Arquitecto de Software & Cloud | Diseño de Producto & IA</span>
+            </h1>
+
+            <p class="hero-description">
+              Más de <strong>20 años de trayectoria</strong> liderando desarrollo de software de alta ingeniería, microservicios escalables, infraestructura cloud internacional en <strong>7+ países</strong> y soluciones AgroTech asistidas por Inteligencia Artificial.
+            </p>
+
+            <div class="hero-cta-group">
+              <a href="#experiencia" class="btn btn-primary">
+                <span>Explorar Trayectoria</span>
+                <span>↓</span>
+              </a>
+              <a href="https://wa.me/593997631577" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+                <span>Contactar Directo</span>
+              </a>
+              <button class="btn btn-secondary" data-copy="miguel.valencia.o@outlook.com">
+                <span>Copiar Email</span>
+                <span>📋</span>
+              </button>
+            </div>
+
+            <div class="hero-metrics">
+              <div class="metric-card">
+                <span class="metric-number">+20</span>
+                <span class="metric-label">Años de Experiencia</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-number">7+</span>
+                <span class="metric-label">Países Gestionados</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-number">1°</span>
+                <span class="metric-label">Lugar Carnaval IT</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-number">13+</span>
+                <span class="metric-label">Diplomas Platzi</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="avatar-card">
+              <div class="avatar-img-wrapper">
+                <img src="/assets/images/avatar.png" alt="Miguel Ángel Valencia Ortiz" class="avatar-img">
+              </div>
+              <div class="avatar-badge-floating">
+                <div class="avatar-badge-icon">⚡</div>
+                <div class="avatar-badge-text">
+                  <h4>Ingeniería & Liderazgo</h4>
+                  <p>Quito, Ecuador 🇪🇨</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Sobre Mí & Filosofía -->
+    <section class="section" id="sobre-mi">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Perfil & Enfoque</span>
+          <h2 class="section-title">Ingeniería Rigurosa y Creatividad Aplicada</h2>
+          <p class="section-subtitle">
+            Una visión integral donde la arquitectura técnica, la experiencia de usuario y la inteligencia artificial convergen para impulsar productos digitales de alto impacto.
+          </p>
+        </div>
+
+        <div class="about-grid">
+          <div class="glass-card">
+            <div class="card-icon">🧠</div>
+            <h3 class="card-title">Visión en Inteligencia Artificial & Metodología SDD</h3>
+            <p class="card-text">
+              Convencido de que la integración de la Inteligencia Artificial en las actividades y flujos diarios reduce la fricción, mitiga errores y resuelve conflictos generados por el factor humano.
+            </p>
+            <div class="card-highlights">
+              <div class="highlight-item">
+                <span class="highlight-bullet">▸</span>
+                <span><strong>Metodología SDD (Software Driven Development):</strong> Flujos de desarrollo asistido por IA para optimizar tiempos de entrega y robustez.</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-bullet">▸</span>
+                <span><strong>Agentes Inteligentes:</strong> Implementación de procesos automatizados para toma de decisiones y análisis predictivo.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-icon flame">🎨</div>
+            <h3 class="card-title">Diseño de Producto & Arquitectura de Sistemas</h3>
+            <p class="card-text">
+              La sinergia entre mi formación en <strong>Ingeniería en Sistemas</strong> y mi formación artística en <strong>Composición Musical</strong> aporta una perspectiva única: estructura matemática rigurosa con sensibilidad en diseño de interfaces y experiencia de usuario (UX/UI).
+            </p>
+            <div class="card-highlights">
+              <div class="highlight-item">
+                <span class="highlight-bullet">▸</span>
+                <span><strong>Arquitectura Descentralizada:</strong> Sistemas robustos de autenticación global y microservicios de alta concurrencia.</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-bullet">▸</span>
+                <span><strong>Procesos Adaptativos:</strong> Metodologías de desarrollo que se ajustan con precisión a la realidad operativa de cada empresa.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Experiencia Laboral (Línea de Tiempo) -->
+    <section class="section" id="experiencia">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Trayectoria</span>
+          <h2 class="section-title">Experiencia y Liderazgo Tecnológico</h2>
+          <p class="section-subtitle">
+            Más de dos décadas impulsando proyectos críticos para corporaciones, multinacionales del entretenimiento, entidades bancarias y plataformas AgroTech.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <!-- 1. IdeasFarm -->
+          <div class="timeline-item featured">
+            <div class="timeline-marker"></div>
+            <div class="timeline-card">
+              <div class="timeline-header">
+                <div>
+                  <h3 class="timeline-company">IdeasFarm S.A.S.</h3>
+                  <p class="timeline-role">Director de TI / Líder de Desarrollo</p>
+                </div>
+                <span class="timeline-period">2025 – 2026</span>
+              </div>
+              <div class="timeline-locations">📍 Ecuador | AgroTech & IA</div>
+              <p class="timeline-description">
+                Empresa AgroTech de ganadería digital enfocada en la digitalización del sector ganadero y agrícola, combinando tecnología de vanguardia e Inteligencia Artificial para maximizar la productividad y sostenibilidad del campo.
+              </p>
+
+              <div class="timeline-responsibilities">
+                <h4 class="timeline-subtitle">Responsabilidades y Logros Clave:</h4>
+                <ul class="timeline-list">
+                  <li class="timeline-list-item">Diseño de arquitectura: Planificación y desarrollo del framework base de la compañía y herramientas de software a medida para optimización de procesos de negocio.</li>
+                  <li class="timeline-list-item">Innovación metodológica: Implementación de flujos de desarrollo asistido por IA mediante metodologías SDD (Software Driven Development).</li>
+                  <li class="timeline-list-item">Desarrollo de aplicaciones modulares para el control y monitoreo en tiempo real de animales, potreros, suministros y variables climáticas.</li>
+                  <li class="timeline-list-item">Implementación de agentes y procesos automatizados basados en IA para toma de decisiones operativas y análisis predictivo en campo.</li>
+                </ul>
+              </div>
+
+              <div class="timeline-tags">
+                <span class="tech-tag">Inteligencia Artificial</span>
+                <span class="tech-tag">AgroTech</span>
+                <span class="tech-tag">SDD Methodologies</span>
+                <span class="tech-tag">PHP / Framework</span>
+                <span class="tech-tag">Docker</span>
+                <span class="tech-tag">IoT & Sensores</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. The Urban Roosters -->
+          <div class="timeline-item featured">
+            <div class="timeline-marker"></div>
+            <div class="timeline-card">
+              <div class="timeline-header">
+                <div>
+                  <h3 class="timeline-company">The Urban Roosters Technologies S.L.</h3>
+                  <p class="timeline-role">Director TI Global</p>
+                </div>
+                <span class="timeline-period">2020 – 2025</span>
+              </div>
+              <div class="timeline-locations">📍 España, Ecuador, Colombia, Argentina, Chile, México, Perú</div>
+              <p class="timeline-description">
+                Multinacional líder en entretenimiento y freestyle rap, organizadora del campeonato mundial <strong>Freestyle FMS</strong> con presencia activa en todos los países federados.
+              </p>
+
+              <div class="timeline-responsibilities">
+                <h4 class="timeline-subtitle">Responsabilidades y Logros Globales:</h4>
+                <ul class="timeline-list">
+                  <li class="timeline-list-item">Gestión integral del personal de tecnología en 7 países (contratación, capacitación y evaluación de rendimiento).</li>
+                  <li class="timeline-list-item">Coordinación de desarrollos con proveedores internacionales, garantizando la alineación con objetivos estratégicos.</li>
+                  <li class="timeline-list-item"><strong>Sistema de votaciones para jueces en eventos FMS:</strong> Calificación y clasificación en tiempo real de alta concurrencia en vivo.</li>
+                  <li class="timeline-list-item"><strong>Sistema de competiciones de ligas menores:</strong> Captación de talentos y gestión de ascensos a FMS.</li>
+                  <li class="timeline-list-item"><strong>UrbanRoosters ID:</strong> Sistema descentralizado de manejo de cuentas y autenticación global de usuarios.</li>
+                  <li class="timeline-list-item">Desarrollo y administración del CMS centralizado para todos los portales web de FMS.</li>
+                </ul>
+              </div>
+
+              <div class="timeline-tags">
+                <span class="tech-tag">UrbanRoosters ID</span>
+                <span class="tech-tag">Realtime Voting System</span>
+                <span class="tech-tag">Microservicios</span>
+                <span class="tech-tag">Cloud Infrastructure</span>
+                <span class="tech-tag">Gestión Internacional</span>
+                <span class="tech-tag">Mobile Apps</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. DreamQuest -->
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-card">
+              <div class="timeline-header">
+                <div>
+                  <h3 class="timeline-company">DreamQuest S.A.</h3>
+                  <p class="timeline-role">Líder de TI</p>
+                </div>
+                <span class="timeline-period">2014 – 2020</span>
+              </div>
+              <div class="timeline-locations">📍 Ecuador | Enterprise & Fintech</div>
+              <p class="timeline-description">
+                Administración del área de sistemas, planificación y desarrollo de soluciones tecnológicas a gran escala para clientes corporativos de primer nivel.
+              </p>
+
+              <div class="timeline-projects">
+                <h4 class="timeline-subtitle">Proyectos Destacados Implementados:</h4>
+                <ul class="timeline-list">
+                  <li class="timeline-list-item"><strong>Produbanco:</strong> Sistema digital de solicitud y aprobación de tarjetas de crédito.</li>
+                  <li class="timeline-list-item"><strong>Automotores Continental:</strong> Portal web corporativo y sistema de comercio para venta y gestión de repuestos automotrices.</li>
+                  <li class="timeline-list-item"><strong>Seguros del Pichincha:</strong> Plataforma digital de emisión y venta de pólizas de seguros "Vívelo".</li>
+                  <li class="timeline-list-item"><strong>Budget Car Rental:</strong> Sistema integral de reserva y disponibilidad de vehículos.</li>
+                  <li class="timeline-list-item"><strong>Yachay:</strong> Plataforma digital institucional para la Ciudad del Conocimiento.</li>
+                </ul>
+              </div>
+
+              <div class="timeline-tags">
+                <span class="tech-tag">Fintech</span>
+                <span class="tech-tag">Produbanco</span>
+                <span class="tech-tag">E-Commerce Repuestos</span>
+                <span class="tech-tag">Insurtech</span>
+                <span class="tech-tag">Car Rental Systems</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Impact Media -->
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-card">
+              <div class="timeline-header">
+                <div>
+                  <h3 class="timeline-company">Impact Media Cia. Ltda.</h3>
+                  <p class="timeline-role">Director TI</p>
+                </div>
+                <span class="timeline-period">2011 – 2013</span>
+              </div>
+              <div class="timeline-locations">📍 Ecuador | Sector Público & Financiero</div>
+              <p class="timeline-description">
+                Gestión de infraestructura tecnológica, personal y desarrollo de servicios en línea para Cooperativa de Ahorro y Crédito Tulcán, Subsecretaría de Tecnología del Estado y Ministerio de Agricultura, Ganadería y Pesca (MAGAP).
+              </p>
+              <div class="timeline-tags">
+                <span class="tech-tag">Sector Gubernamental</span>
+                <span class="tech-tag">Banca Cooperativa</span>
+                <span class="tech-tag">Infraestructura TI</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Trayectoria Temprana -->
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-card">
+              <div class="timeline-header">
+                <div>
+                  <h3 class="timeline-company">Graficar Publicidad / NDeveloper / Imagen Global / EEQ</h3>
+                  <p class="timeline-role">Evolución Técnica & Desarrollo Web</p>
+                </div>
+                <span class="timeline-period">2001 – 2011</span>
+              </div>
+              <div class="timeline-locations">📍 Ecuador</div>
+              <ul class="timeline-list">
+                <li class="timeline-list-item"><strong>Graficar Publicidad (2005-2011):</strong> TI y desarrollo de software a medida para juntas de agua, aplicaciones web y nativas.</li>
+                <li class="timeline-list-item"><strong>NDeveloper (2005):</strong> Desarrollo de capa de presentación UI para portales y red social Munke.</li>
+                <li class="timeline-list-item"><strong>Imagen Global (2003-2004):</strong> Diseño de interfaces y desarrollo web para Automotores Continental, Clínica Internacional y DeCameron.</li>
+                <li class="timeline-list-item"><strong>Empresa Eléctrica Quito S.A. (2001-2002):</strong> Operación y mantenimiento del sistema de gestión de cortes, reconexiones y facturación ciudadana.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Proyectos & Casos de Éxito -->
+    <section class="section" id="proyectos">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Casos de Éxito</span>
+          <h2 class="section-title">Arquitectura e Impacto en Producción</h2>
+          <p class="section-subtitle">
+            Soluciones robustas diseñadas para operar con alta concurrencia, tolerancia a fallos y excelente experiencia de usuario.
+          </p>
+        </div>
+
+        <div class="projects-grid">
+          <!-- Proyecto 1 -->
+          <div class="project-card">
+            <div class="project-banner">
+              <span class="project-badge global">Global • 7 Países</span>
+              <span>🎤</span>
+            </div>
+            <div class="project-body">
+              <h3 class="project-title">UrbanRoosters ID & FMS Voting System</h3>
+              <p class="project-desc">
+                Infraestructura internacional y aplicación en tiempo real para votación de jueces en batallas de freestyle FMS a escala mundial, acompañada de un sistema descentralizado de autenticación.
+              </p>
+              <div class="project-features">
+                <div class="project-feature-item">
+                  <span>✓</span> Votación de jueces en vivo con latencia mínima
+                </div>
+                <div class="project-feature-item">
+                  <span>✓</span> Cuentas descentralizadas para millones de usuarios
+                </div>
+                <div class="project-feature-item">
+                  <span>✓</span> Sistema de ligas y ascensos automáticos
+                </div>
+              </div>
+              <div class="timeline-tags">
+                <span class="tech-tag">Realtime WebSockets</span>
+                <span class="tech-tag">Cloud Scalability</span>
+                <span class="tech-tag">Auth ID</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Proyecto 2 -->
+          <div class="project-card">
+            <div class="project-banner">
+              <span class="project-badge agrotech">AgroTech • IA</span>
+              <span>🌾</span>
+            </div>
+            <div class="project-body">
+              <h3 class="project-title">IdeasFarm AI Ganadería Digital</h3>
+              <p class="project-desc">
+                Plataforma modular para control y monitoreo inteligente de ganado, pastos y suministros climáticos con agentes de Inteligencia Artificial para análisis predictivo operativo.
+              </p>
+              <div class="project-features">
+                <div class="project-feature-item">
+                  <span>✓</span> Modelado modular y analítica predictiva
+                </div>
+                <div class="project-feature-item">
+                  <span>✓</span> Flujos de desarrollo con metodología SDD
+                </div>
+                <div class="project-feature-item">
+                  <span>✓</span> Monitoreo en tiempo real de variables de campo
+                </div>
+              </div>
+              <div class="timeline-tags">
+                <span class="tech-tag">AI Agents</span>
+                <span class="tech-tag">Predictive Analytics</span>
+                <span class="tech-tag">Modular PHP</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Proyecto 3 -->
+          <div class="project-card">
+            <div class="project-banner">
+              <span class="project-badge fintech">Fintech • Enterprise</span>
+              <span>💳</span>
+            </div>
+            <div class="project-body">
+              <h3 class="project-title">Sistemas Financieros Produbanco & Seguros</h3>
+              <p class="project-desc">
+                Desarrollo del flujo integral de solicitud digital de tarjetas de crédito para Produbanco y plataforma de emisión de seguros "Vívelo" para Seguros del Pichincha.
+              </p>
+              <div class="project-features">
+                <div class="project-feature-item">
+                  <span>✓</span> Cumplimiento de estrictos estándares de seguridad
+                </div>
+                <div class="project-feature-item">
+                  <span>✓</span> Integración con pasarelas y scoring crediticio
+                </div>
+                <div class="project-feature-item">
+                  <span>✓</span> Experiencia de onboarding intuitiva
+                </div>
+              </div>
+              <div class="timeline-tags">
+                <span class="tech-tag">Fintech Security</span>
+                <span class="tech-tag">Produbanco</span>
+                <span class="tech-tag">Insurtech</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Proyecto 4 -->
+          <div class="project-card">
+            <div class="project-banner">
+              <span class="project-badge award">1er Lugar • Premio</span>
+              <span>🏆</span>
+            </div>
+            <div class="project-body">
+              <h3 class="project-title">Sistema Nacional de Registro de Vacunación</h3>
+              <p class="project-desc">
+                Proyecto premiado con el <strong>Primer Lugar</strong> en el Concurso Interuniversitario de Programación (Carnaval IT 2007) representando a la Universidad Tecnológica Israel.
+              </p>
+              <div class="project-features">
+                <div class="project-feature-item">
+                  <span>✓</span> Arquitectura centralizada de historiales clínicos
+                </div>
+                <div class="project-feature-item">
+                  <span>✓</span> Algoritmos de calendarización de dosis
+                </div>
+                <div class="project-feature-item">
+                  <span>✓</span> Validación y consistencia de datos a nivel país
+                </div>
+              </div>
+              <div class="timeline-tags">
+                <span class="tech-tag">Primer Lugar 2007</span>
+                <span class="tech-tag">Salud Pública</span>
+                <span class="tech-tag">Algoritmos</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Habilidades & Stack -->
+    <section class="section" id="habilidades">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Stack & Competencias</span>
+          <h2 class="section-title">Capacidades Técnicas y Estratégicas</h2>
+          <p class="section-subtitle">
+            Dominio integral desde la concepción de producto y diseño UX hasta la arquitectura de microservicios e infraestructura en la nube.
+          </p>
+        </div>
+
+        <div class="skills-wrapper">
+          <!-- Categoría 1 -->
+          <div class="skill-category-card">
+            <div class="skill-category-header">
+              <div class="skill-category-icon">🚀</div>
+              <h3 class="skill-category-title">Estrategia & Liderazgo</h3>
+            </div>
+            <div class="skill-pills">
+              <span class="skill-pill hot">Dirección de TI</span>
+              <span class="skill-pill hot">Gestión de Equipos Internacionales</span>
+              <span class="skill-pill">Administración de Proyectos</span>
+              <span class="skill-pill">Diseño de Producto</span>
+              <span class="skill-pill">Metodologías Ágiles & SDD</span>
+              <span class="skill-pill">Marketing Digital & Métricas</span>
+              <span class="skill-pill">Gestión de Presupuestos TI</span>
+            </div>
+          </div>
+
+          <!-- Categoría 2 -->
+          <div class="skill-category-card">
+            <div class="skill-category-header">
+              <div class="skill-category-icon">☁️</div>
+              <h3 class="skill-category-title">Arquitectura Cloud & DevOps</h3>
+            </div>
+            <div class="skill-pills">
+              <span class="skill-pill hot">Docker & Docker Compose</span>
+              <span class="skill-pill hot">Traefik Reverse Proxy</span>
+              <span class="skill-pill hot">Cloudflare Zero Trust / Tunnels</span>
+              <span class="skill-pill">Servidores Linux (Ubuntu / Debian)</span>
+              <span class="skill-pill">Arquitectura Descentralizada</span>
+              <span class="skill-pill">Git & GitHub / GitLab CI</span>
+              <span class="skill-pill">DigitalOcean</span>
+              <span class="skill-pill">Seguridad & Certificados SSL</span>
+            </div>
+          </div>
+
+          <!-- Categoría 3 -->
+          <div class="skill-category-card">
+            <div class="skill-category-header">
+              <div class="skill-category-icon">⚡</div>
+              <h3 class="skill-category-title">Backend & Inteligencia Artificial</h3>
+            </div>
+            <div class="skill-pills">
+              <span class="skill-pill hot">Inteligencia Artificial & Agentes</span>
+              <span class="skill-pill hot">PHP (Avanzado & Frameworks)</span>
+              <span class="skill-pill">Laravel</span>
+              <span class="skill-pill">Python</span>
+              <span class="skill-pill">Bases de Datos Relacionales (MySQL / PostgreSQL)</span>
+              <span class="skill-pill">NoSQL (MongoDB / Redis)</span>
+              <span class="skill-pill">APIs RESTful & WebSockets</span>
+            </div>
+          </div>
+
+          <!-- Categoría 4 -->
+          <div class="skill-category-card">
+            <div class="skill-category-header">
+              <div class="skill-category-icon">🎨</div>
+              <h3 class="skill-category-title">Frontend & Diseño UX/UI</h3>
+            </div>
+            <div class="skill-pills">
+              <span class="skill-pill hot">Figma (Design Systems)</span>
+              <span class="skill-pill hot">Desarrollo UX / UI</span>
+              <span class="skill-pill">JavaScript Moderno (ES6+)</span>
+              <span class="skill-pill">React</span>
+              <span class="skill-pill">Vue.js</span>
+              <span class="skill-pill">HTML5 & CSS Grid / Flexbox</span>
+              <span class="skill-pill">Responsive Design & PostCSS</span>
+              <span class="skill-pill">Testing E2E con Cypress</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Cursos & Certificaciones (Platzi) -->
+    <section class="section" id="certificaciones">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Aprendizaje Continuo</span>
+          <h2 class="section-title">Certificaciones Profesionales</h2>
+          <p class="section-subtitle">
+            Validación de conocimientos técnicos en pruebas automatizadas, cloud, arquitectura web y servidores.
+          </p>
+        </div>
+
+        <div class="cert-grid">
+          <!-- Cert 1 -->
+          <div class="cert-card">
+            <div>
+              <span class="cert-date">04 / 2019</span>
+              <h3 class="cert-title">Curso de End to End Testing con Cypress</h3>
+            </div>
+            <div class="cert-footer">
+              <span class="cert-platform">Platzi</span>
+              <a href="https://platzi.com/p/Miguel_Valencia/curso/1411-course/diploma/detalle/" target="_blank" rel="noopener noreferrer" class="cert-link">Ver Diploma ↗</a>
+            </div>
+          </div>
+
+          <!-- Cert 2 -->
+          <div class="cert-card">
+            <div>
+              <span class="cert-date">03 / 2019</span>
+              <h3 class="cert-title">Administración de Servidores Linux</h3>
+            </div>
+            <div class="cert-footer">
+              <span class="cert-platform">Platzi</span>
+              <a href="https://platzi.com/p/Miguel_Valencia/curso/1123-course/diploma/detalle/" target="_blank" rel="noopener noreferrer" class="cert-link">Ver Diploma ↗</a>
+            </div>
+          </div>
+
+          <!-- Cert 3 -->
+          <div class="cert-card">
+            <div>
+              <span class="cert-date">02 / 2019</span>
+              <h3 class="cert-title">Curso Básico de Vue.js</h3>
+            </div>
+            <div class="cert-footer">
+              <span class="cert-platform">Platzi</span>
+              <a href="https://platzi.com/p/Miguel_Valencia/curso/1111-course/diploma/detalle/" target="_blank" rel="noopener noreferrer" class="cert-link">Ver Diploma ↗</a>
+            </div>
+          </div>
+
+          <!-- Cert 4 -->
+          <div class="cert-card">
+            <div>
+              <span class="cert-date">02 / 2019</span>
+              <h3 class="cert-title">Curso de PHP con Laravel</h3>
+            </div>
+            <div class="cert-footer">
+              <span class="cert-platform">Platzi</span>
+              <a href="https://platzi.com/p/Miguel_Valencia/curso/1467-course/diploma/detalle/" target="_blank" rel="noopener noreferrer" class="cert-link">Ver Diploma ↗</a>
+            </div>
+          </div>
+
+          <!-- Cert 5 -->
+          <div class="cert-card">
+            <div>
+              <span class="cert-date">02 / 2019</span>
+              <h3 class="cert-title">Curso Avanzado de PHP</h3>
+            </div>
+            <div class="cert-footer">
+              <span class="cert-platform">Platzi</span>
+              <a href="https://platzi.com/p/Miguel_Valencia/curso/1462-course/diploma/detalle/" target="_blank" rel="noopener noreferrer" class="cert-link">Ver Diploma ↗</a>
+            </div>
+          </div>
+
+          <!-- Cert 6 -->
+          <div class="cert-card">
+            <div>
+              <span class="cert-date">02 / 2019</span>
+              <h3 class="cert-title">Curso Profesional de Git y GitHub</h3>
+            </div>
+            <div class="cert-footer">
+              <span class="cert-platform">Platzi</span>
+              <a href="https://platzi.com/p/Miguel_Valencia/curso/1170-course/diploma/detalle/" target="_blank" rel="noopener noreferrer" class="cert-link">Ver Diploma ↗</a>
+            </div>
+          </div>
+
+          <!-- Cert 7 -->
+          <div class="cert-card">
+            <div>
+              <span class="cert-date">09 / 2018</span>
+              <h3 class="cert-title">Curso de DigitalOcean Cloud</h3>
+            </div>
+            <div class="cert-footer">
+              <span class="cert-platform">Platzi</span>
+              <a href="https://platzi.com/p/Miguel_Valencia/curso/1208-course/diploma/detalle/" target="_blank" rel="noopener noreferrer" class="cert-link">Ver Diploma ↗</a>
+            </div>
+          </div>
+
+          <!-- Cert 8 -->
+          <div class="cert-card">
+            <div>
+              <span class="cert-date">07 / 2018</span>
+              <h3 class="cert-title">Curso de CSS Grid Layout</h3>
+            </div>
+            <div class="cert-footer">
+              <span class="cert-platform">Platzi</span>
+              <a href="https://platzi.com/p/Miguel_Valencia/curso/1229-course/diploma/detalle/" target="_blank" rel="noopener noreferrer" class="cert-link">Ver Diploma ↗</a>
+            </div>
+          </div>
+
+          <!-- Cert 9 -->
+          <div class="cert-card">
+            <div>
+              <span class="cert-date">05 / 2018</span>
+              <h3 class="cert-title">Diseño de Interfaces y UX</h3>
+            </div>
+            <div class="cert-footer">
+              <span class="cert-platform">Platzi</span>
+              <a href="https://platzi.com/p/Miguel_Valencia/curso/1140-course/diploma/detalle/" target="_blank" rel="noopener noreferrer" class="cert-link">Ver Diploma ↗</a>
+            </div>
+          </div>
+
+          <!-- Cert 10 -->
+          <div class="cert-card">
+            <div>
+              <span class="cert-date">01 / 2017</span>
+              <h3 class="cert-title">Diseño Web Moderno con PostCSS</h3>
+            </div>
+            <div class="cert-footer">
+              <span class="cert-platform">Platzi</span>
+              <a href="https://platzi.com/p/Miguel_Valencia/curso/1047-course/diploma/detalle/" target="_blank" rel="noopener noreferrer" class="cert-link">Ver Diploma ↗</a>
+            </div>
+          </div>
+
+          <!-- Cert 11 -->
+          <div class="cert-card">
+            <div>
+              <span class="cert-date">01 / 2017</span>
+              <h3 class="cert-title">Curso de Responsive Design</h3>
+            </div>
+            <div class="cert-footer">
+              <span class="cert-platform">Platzi</span>
+              <a href="https://platzi.com/p/Miguel_Valencia/curso/1036-course/diploma/detalle/" target="_blank" rel="noopener noreferrer" class="cert-link">Ver Diploma ↗</a>
+            </div>
+          </div>
+
+          <!-- Cert 12 -->
+          <div class="cert-card">
+            <div>
+              <span class="cert-date">10 / 2016</span>
+              <h3 class="cert-title">Curso de SQL y MySQL</h3>
+            </div>
+            <div class="cert-footer">
+              <span class="cert-platform">Platzi</span>
+              <a href="https://platzi.com/p/Miguel_Valencia/curso/50-course/diploma/detalle/" target="_blank" rel="noopener noreferrer" class="cert-link">Ver Diploma ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Educación & Premios -->
+    <section class="section" id="educacion">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Formación Académica</span>
+          <h2 class="section-title">Estudios y Distinciones</h2>
+        </div>
+
+        <div class="edu-grid">
+          <div class="edu-card award">
+            <span class="edu-year">🥇 2006 – 2007</span>
+            <h3 class="edu-title">Primer Lugar — Concurso Interuniversitario de Programación</h3>
+            <p class="edu-school">Carnaval IT 2007 | Universidad Tecnológica Israel</p>
+            <p class="edu-desc">
+              Desarrollo y presentación del Sistema Nacional de Registro de Vacunación.
+            </p>
+          </div>
+
+          <div class="edu-card">
+            <span class="edu-year">2004 – 2011</span>
+            <h3 class="edu-title">Ingeniería en Sistemas Informáticos</h3>
+            <p class="edu-school">Universidad Tecnológica Israel (Quito)</p>
+            <p class="edu-desc">
+              Egresado en Ingeniería de Sistemas con énfasis en desarrollo de software y bases de datos.
+            </p>
+          </div>
+
+          <div class="edu-card">
+            <span class="edu-year">2007 – 2009</span>
+            <h3 class="edu-title">Licenciatura en Música & Canto Lírico</h3>
+            <p class="edu-school">Universidad de los Hemisferios (Quito)</p>
+            <p class="edu-desc">
+              Especialización en Composición y Arreglos Musicales y Canto Lírico.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Contacto Directo -->
+    <section class="section" id="contacto">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Conexión Directa</span>
+          <h2 class="section-title">Hablemos de tu Próximo Proyecto</h2>
+          <p class="section-subtitle">
+            ¿Tienes un desafío técnico, una necesidad de arquitectura en la nube o deseas explorar consultoría tecnológica? Conversemos.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <!-- Tarjetas de Contacto Rápido -->
+          <div class="contact-info-cards">
+            <div class="contact-item">
+              <div class="contact-item-icon">💬</div>
+              <div class="contact-item-details">
+                <h4>WhatsApp Directo</h4>
+                <a href="https://wa.me/593997631577" target="_blank" rel="noopener noreferrer">+593 99 763 1577</a>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-item-icon">✉️</div>
+              <div class="contact-item-details">
+                <h4>Correo Principal</h4>
+                <a href="mailto:miguel.valencia.o@outlook.com">miguel.valencia.o@outlook.com</a>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-item-icon">📞</div>
+              <div class="contact-item-details">
+                <h4>Teléfono Convencional</h4>
+                <p>02 261-0418</p>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-item-icon">📍</div>
+              <div class="contact-item-details">
+                <h4>Ubicación</h4>
+                <p>Quito, San Pedro N32-70 y Rumipamba, Ecuador</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formulario Directo -->
+          <div class="contact-form-card">
+            <form id="contactForm">
+              <div class="form-group">
+                <label for="formName" class="form-label">Tu Nombre o Empresa</label>
+                <input type="text" id="formName" class="form-control" placeholder="Ej: Carlos Andrade" required>
+              </div>
+
+              <div class="form-group">
+                <label for="formEmail" class="form-label">Tu Correo Electrónico</label>
+                <input type="email" id="formEmail" class="form-control" placeholder="carlos@empresa.com" required>
+              </div>
+
+              <div class="form-group">
+                <label for="formMessage" class="form-label">Mensaje o Detalle del Proyecto</label>
+                <textarea id="formMessage" class="form-control" placeholder="Cuéntame sobre el alcance técnico o tus requerimientos..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-whatsapp" style="width: 100%;">
+                <span>Enviar Mensaje a WhatsApp</span>
+                <span>↗</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
-</body>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="/assets/images/logo/logo-dark.svg" alt="Miguel Valencia" class="footer-logo">
+          <p class="footer-tagline">Diseño de Producto, Arquitectura de Software e Inteligencia Artificial.</p>
+        </div>
+
+        <div class="footer-links">
+          <a href="#hero" class="footer-link">Inicio</a>
+          <a href="#sobre-mi" class="footer-link">Sobre Mí</a>
+          <a href="#experiencia" class="footer-link">Experiencia</a>
+          <a href="#proyectos" class="footer-link">Proyectos</a>
+          <a href="#habilidades" class="footer-link">Habilidades</a>
+          <a href="#contacto" class="footer-link">Contacto</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        &copy; 2026 Miguel Ángel Valencia Ortiz (mvalencia.pro) — Todos los derechos reservados.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript Engine -->
+  <script src="/assets/js/main.js"></script>
+</body>
 </html>

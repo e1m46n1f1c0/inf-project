@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mvalencia.pro — Próximamente</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <!-- 1. SVG Dinámico (Adaptable en navegadores modernos) -->
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon/favicon.svg" />
+
+  <!-- 2. PNGs específicos según el tema del SO (Navegadores basados en Chromium/Firefox) -->
+  <link rel="icon" type="image/png" href="/assets/images/favicon/favicon-dark.png" media="(prefers-color-scheme: dark)"
+    sizes="96x96" />
+  <link rel="icon" type="image/png" href="/assets/images/favicon/favicon-light.png"
+    media="(prefers-color-scheme: light)" sizes="96x96" />
+
+  <!-- 3. iOS / Apple (Pantalla de inicio) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="MValencia" />
+
+  <!-- 4. Android / PWA (Barra de estado del sistema y Web App Manifest) -->
+  <link rel="manifest" href="/assets/images/favicon/site.webmanifest" />
+  <meta name="theme-color" content="#090d16" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+
+  <!-- 5. Fallback tradicional -->
+  <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" />
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --card-bg: rgba(18, 24, 38, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --primary: #3b82f6;
+      --primary-glow: rgba(59, 130, 246, 0.4);
+      --accent: #8b5cf6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+      padding: 1.5rem;
+    }
+
+    /* Animated background glow */
+    .glow-bg {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--primary-glow) 0%, rgba(139, 92, 246, 0.15) 45%, transparent 70%);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+      animation: pulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: translate(-50%, -50%) scale(0.85);
+        opacity: 0.7;
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(1.15);
+        opacity: 1;
+      }
+    }
+
+    /* Grid pattern */
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 28px;
+      padding: 3.5rem 2.5rem;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+      animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      color: #60a5fa;
+      font-size: 0.825rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      letter-spacing: 0.02em;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #3b82f6;
+      border-radius: 50%;
+      box-shadow: 0 0 12px #3b82f6;
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.85);
+      }
+    }
+
+    .brand-logo {
+      height: 48px;
+      width: auto;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 4px 12px rgba(230, 97, 19, 0.25));
+    }
+
+    .brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand span {
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tagline {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+      font-weight: 400;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .feature-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .feature-icon {
+      font-size: 1.4rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .feature-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .feature-desc {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .footer-note {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: #475569;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .brand {
+        font-size: 2.2rem;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="glow-bg"></div>
+  <div class="grid-overlay"></div>
+
+  <main class="container">
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      Próximamente
+    </div>
+
+    <div>
+      <img src="/assets/images/logo/logo-dark.svg" alt="Miguel Valencia" class="brand-logo" />
+    </div>
+
+    <h1 hidden class="brand">mvalencia<span>.pro</span></h1>
+
+    <p class="tagline">
+      Estamos construyendo nuestra nueva plataforma digital de alta ingeniería e infraestructura. Muy pronto disponible.
+    </p>
+
+    <div class="features">
+      <div class="feature-item">
+        <span class="feature-icon">⚡</span>
+        <span class="feature-title">Alto Rendimiento</span>
+        <span class="feature-desc">Arquitectura optimizada</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">🛡️</span>
+        <span class="feature-title">Seguridad Zero Trust</span>
+        <span class="feature-desc">Protección integral</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✨</span>
+        <span class="feature-title">Nueva Experiencia</span>
+        <span class="feature-desc">Lanzamiento inminente</span>
+      </div>
+    </div>
+
+    <footer class="footer-note">
+      &copy; 2026 mvalencia.pro — Todos los derechos reservados.
+    </footer>
+  </main>
+</body>
+
+</html>
