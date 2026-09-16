@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: infinyti/app:8.4-alpine
+    image: alvalab/infinyti:8.4-alpine
     container_name: ${CONTAINER_NAME:-ideasfarm-acl-server-prod}
     restart: unless-stopped
     volumes:
