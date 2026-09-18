@@ -4,6 +4,7 @@ setup/.infinyti
 setup/clients.json
 setup/register.json
 setup/repos.yml
+docker-compose.mount.yml
 
 # OS files
 .DS_Store

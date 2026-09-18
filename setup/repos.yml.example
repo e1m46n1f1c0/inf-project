@@ -15,11 +15,11 @@ framework:
 # Aplicaciones (montadas en src/apps/<nombre>/)
 apps:
   acl-oauth:
-    url: git@gitlab.com:alvalab/acl-oauth.git
+    url: git@gitlab.com:infinity-plf/acl-oauth.git
     branch: develop
     path: src/apps/acl-oauth
   geoisys:
-    url: git@gitlab.com:alvalab/geoisys.git
+    url: git@gitlab.com:infinity-plf/geoisys.git
     branch: develop
     path: src/apps/geoisys
   cms:

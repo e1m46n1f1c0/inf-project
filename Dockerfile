@@ -10,6 +10,10 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     unzip \
+    wget \
+    curl \
+    git \
+    ca-certificates \
     && docker-php-ext-install intl opcache \
     && rm -rf /var/lib/apt/lists/*
 

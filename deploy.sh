@@ -24,33 +24,37 @@ ACTION="${1:-up}"
 
 COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-ideasfarm}"
 CLIENT_DOMAIN="${CLIENT_DOMAIN:-ideasfarm.local}"
-APP_ENV="${APP_ENV:-prod}"
+DEPLOY_ENV="${DEPLOY_ENV:-prod}"
 SERVICE_NAME="${SERVICE_NAME-acl-server}"
 SERVICE_SUBDOMAIN="${SERVICE_SUBDOMAIN-login}"
 MOUNT_CODE="${MOUNT_CODE:-true}"
 
-if [ "$APP_ENV" = "prod" ]; then
+if [ -z "${INFINYTI_NETWORK:-}" ]; then
+  INFINYTI_NETWORK="${CLIENT_DOMAIN//./-}"
+fi
+
+if [ "$DEPLOY_ENV" = "prod" ]; then
   COMPOSE_PROJECT_NAME_ENV="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}"
-  CONTAINER_NAME="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${APP_ENV}"
+  CONTAINER_NAME="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${DEPLOY_ENV}"
   if [ -n "${SERVICE_SUBDOMAIN}" ]; then
     SERVICE_HOST="${SERVICE_SUBDOMAIN}.${CLIENT_DOMAIN}"
   else
     SERVICE_HOST="${CLIENT_DOMAIN}"
   fi
 else
-  COMPOSE_PROJECT_NAME_ENV="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${APP_ENV}"
-  CONTAINER_NAME="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${APP_ENV}"
+  COMPOSE_PROJECT_NAME_ENV="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${DEPLOY_ENV}"
+  CONTAINER_NAME="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${DEPLOY_ENV}"
   if [ -n "${SERVICE_SUBDOMAIN}" ]; then
-    SERVICE_HOST="${APP_ENV}-${SERVICE_SUBDOMAIN}.${CLIENT_DOMAIN}"
+    SERVICE_HOST="${DEPLOY_ENV}-${SERVICE_SUBDOMAIN}.${CLIENT_DOMAIN}"
   else
-    SERVICE_HOST="${APP_ENV}.${CLIENT_DOMAIN}"
+    SERVICE_HOST="${DEPLOY_ENV}.${CLIENT_DOMAIN}"
   fi
 fi
 
-NETWORK_NAME="private-network-${COMPOSE_PROJECT_NAME}"
+NETWORK_NAME="private-network-${INFINYTI_NETWORK:-$COMPOSE_PROJECT_NAME}"
 
 echo -e "${BOLD}${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${BOLD} Infinyti Framework — Orquestador de Entorno: ${YELLOW}${APP_ENV}${NC}"
+echo -e "${BOLD} Infinyti Framework — Orquestador de Entorno: ${YELLOW}${DEPLOY_ENV}${NC}"
 echo -e "${BOLD}${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e " Proyecto   : ${YELLOW}${COMPOSE_PROJECT_NAME_ENV}${NC}"
 echo -e " Host       : ${YELLOW}https://${SERVICE_HOST}${NC}"
@@ -128,9 +132,11 @@ def process_entry(name, info):
     if not os.path.exists(path) or not os.path.exists(os.path.join(path, '.git')):
         subprocess.run(['git', 'submodule', 'add', '-f', '-b', branch, url, path], check=False)
     else:
+        subprocess.run(['git', 'config', '-f', '.gitmodules', f'submodule.{path}.path', path], check=False)
         subprocess.run(['git', 'config', '-f', '.gitmodules', f'submodule.{path}.url', url], check=False)
         subprocess.run(['git', 'config', '-f', '.gitmodules', f'submodule.{path}.branch', branch], check=False)
         subprocess.run(['git', 'submodule', 'sync', '--', path], check=False)
+        subprocess.run(['git', 'add', path], check=False)
 
     subprocess.run(['git', 'submodule', 'update', '--init', '--recursive', path], check=False)
     subprocess.run(['git', '-C', path, 'fetch', 'origin'], check=False)
@@ -170,17 +176,71 @@ run_process(data)
   fi
 }
 
+generate_mount_file() {
+  local REPOS_FILE="setup/repos.yml"
+  if [ ! -f "$REPOS_FILE" ]; then
+    return
+  fi
+
+  echo -e "  ${CYAN}⚙️  Generando docker-compose.mount.yml dinámicamente...${NC}"
+
+  python3 -c "
+import yaml, os
+with open('$REPOS_FILE', 'r') as f:
+    data = yaml.safe_load(f) or {}
+
+paths = []
+def collect_entries(info):
+    if not isinstance(info, dict):
+        return
+    if 'path' in info:
+        paths.append(info['path'].rstrip('/'))
+        return
+    for k, v in info.items():
+        if isinstance(v, dict):
+            collect_entries(v)
+
+collect_entries(data)
+
+mount_content = '''services:
+  app:
+    volumes:
+'''
+for p in paths:
+    if p == 'src/infinyti':
+        dest = '/var/www/html'
+    elif p.startswith('src/apps/'):
+        dest = f'/var/www/html/{p.replace(\"src/\", \"\", 1)}'
+    elif p.startswith('src/templates/'):
+        dest = f'/var/www/html/public/{p.replace(\"src/templates/\", \"\", 1)}'
+    else:
+        dest = f'/var/www/html/{p.replace(\"src/\", \"\", 1)}'
+    mount_content += f'      - ./{p}:{dest}\n'
+
+mount_content += '''      - ./setup/register.json:/var/www/html/apps/register.json
+      - ./setup/.infinyti:/var/www/html/.env
+      - /home/mavo/.local/share/mkcert/rootCA.pem:/usr/local/share/ca-certificates/mkcert-rootCA.crt:ro
+      - ${SSH_HOST:-/home/mavo}/.ssh:/root/.ssh-host:ro
+'''
+with open('docker-compose.mount.yml', 'w') as f:
+    f.write(mount_content)
+"
+}
+
 COMPOSE_FILES=("-f" "docker-compose.yml")
-if [ "${MOUNT_CODE:-true}" = "true" ] && [ -f "docker-compose.mount.yml" ]; then
-  COMPOSE_FILES+=("-f" "docker-compose.mount.yml")
+if [ "${MOUNT_CODE:-true}" = "true" ]; then
+  generate_mount_file
+  if [ -f "docker-compose.mount.yml" ]; then
+    COMPOSE_FILES+=("-f" "docker-compose.mount.yml")
+  fi
 fi
 
 env_build() {
-  echo -e "${BOLD}🔨 Construyendo imagen inmutable para entorno: ${YELLOW}${APP_ENV}${NC}"
-  INFINYTI_NETWORK="${COMPOSE_PROJECT_NAME}" \
+  echo -e "${BOLD}🔨 Construyendo imagen inmutable para entorno: ${YELLOW}${DEPLOY_ENV}${NC}"
+  INFINYTI_NETWORK="${INFINYTI_NETWORK:-$COMPOSE_PROJECT_NAME}" \
   COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME}" \
   SERVICE_NAME="${SERVICE_NAME}" \
-  APP_ENV="$APP_ENV" \
+  DEPLOY_ENV="$DEPLOY_ENV" \
   SERVICE_HOST="$SERVICE_HOST" \
   CONTAINER_NAME="$CONTAINER_NAME" \
   docker compose "${COMPOSE_FILES[@]}" -p "$COMPOSE_PROJECT_NAME_ENV" build
@@ -196,10 +256,10 @@ env_up() {
     echo -e "  ${GREEN}🔒 Modo Producción/Inmutable: Usando código dentro de la imagen.${NC}"
   fi
 
-  INFINYTI_NETWORK="${COMPOSE_PROJECT_NAME}" \
+  INFINYTI_NETWORK="${INFINYTI_NETWORK:-$COMPOSE_PROJECT_NAME}" \
   COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME}" \
   SERVICE_NAME="${SERVICE_NAME}" \
-  APP_ENV="$APP_ENV" \
+  DEPLOY_ENV="$DEPLOY_ENV" \
   SERVICE_HOST="$SERVICE_HOST" \
   CONTAINER_NAME="$CONTAINER_NAME" \
   docker compose "${COMPOSE_FILES[@]}" -p "$COMPOSE_PROJECT_NAME_ENV" up -d
@@ -213,18 +273,18 @@ env_up() {
 
   env_install
 
-  echo -e "  ${GREEN}✅ Entorno ${APP_ENV} activo en: https://${SERVICE_HOST}${NC}"
+  echo -e "  ${GREEN}✅ Entorno ${DEPLOY_ENV} activo en: https://${SERVICE_HOST}${NC}"
 }
 
 env_down() {
-  echo -e "${BOLD}▶ Deteniendo entorno: ${YELLOW}${APP_ENV}${NC}"
-  INFINYTI_NETWORK="${COMPOSE_PROJECT_NAME}" \
+  echo -e "${BOLD}▶ Deteniendo entorno: ${YELLOW}${DEPLOY_ENV}${NC}"
+  INFINYTI_NETWORK="${INFINYTI_NETWORK:-$COMPOSE_PROJECT_NAME}" \
   COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME}" \
   SERVICE_NAME="${SERVICE_NAME}" \
-  APP_ENV="$APP_ENV" \
+  DEPLOY_ENV="$DEPLOY_ENV" \
   CONTAINER_NAME="$CONTAINER_NAME" \
   docker compose "${COMPOSE_FILES[@]}" -p "$COMPOSE_PROJECT_NAME_ENV" down
-  echo -e "  ${GREEN}✅ Entorno ${APP_ENV} detenido.${NC}"
+  echo -e "  ${GREEN}✅ Entorno ${DEPLOY_ENV} detenido.${NC}"
 }
 
 env_install() {

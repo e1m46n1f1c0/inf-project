@@ -18,9 +18,9 @@ set +o allexport
 # Determinar nombre del contenedor dinámicamente
 COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-ideasfarm}"
 SERVICE_NAME="${SERVICE_NAME:-acl-server}"
-APP_ENV="${APP_ENV:-prod}"
+DEPLOY_ENV="${DEPLOY_ENV:-prod}"
 
-CONTAINER="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${APP_ENV}"
+CONTAINER="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${DEPLOY_ENV}"
 
 echo "🚀 Iniciando instalación y configuración del entorno Infinyti..."
 echo "🐳 Contenedor objetivo: $CONTAINER"
@@ -97,9 +97,9 @@ done
 # =================================================================
 # CONFIANZA DE CERTIFICADOS SSL EN DESARROLLO (MKCERT)
 # =================================================================
-if docker exec -i $CONTAINER [ -f /etc/ssl/certs/rootCA.pem ]; then
+if docker exec -i $CONTAINER [ -f /usr/local/share/ca-certificates/mkcert-rootCA.crt ]; then
     echo "🛡️  Registrando Root CA de mkcert en la lista de confianza del contenedor..."
-    docker exec -i $CONTAINER sh -c "cp /etc/ssl/certs/rootCA.pem /usr/local/share/ca-certificates/rootCA.crt && update-ca-certificates"
+    docker exec -i $CONTAINER sh -c "update-ca-certificates"
 fi
 # =================================================================
 

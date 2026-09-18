@@ -1,0 +1,22 @@
+{
+    "name": "Dimention Dev",
+    "dockerComposeFile": [
+        "../docker-compose.yml",
+        "../docker-compose.mount.yml"
+    ],
+    "service": "app",
+    "workspaceFolder": "/var/www/html",
+    "remoteUser": "root",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "esbenp.prettier-vscode",
+                "vue.volar",
+                "eamodio.gitlens"
+            ]
+        }
+    },
+    "forwardPorts": [80],
+    "postCreateCommand": "if [ -d /root/.ssh-host ]; then mkdir -p /root/.ssh/sockets && cp -rn /root/.ssh-host/* /root/.ssh/ 2>/dev/null || true && chmod 700 /root/.ssh /root/.ssh/sockets && chmod 600 /root/.ssh/* 2>/dev/null || true && chown -R root:root /root/.ssh; fi && git config --global --add safe.directory '*' && if [ -f .env ]; then set -a; . .env; set +a; fi && SCRIPT=${INSTALL_SCRIPT:-infinyti-install.sh} && if [ -f \"scripts/$SCRIPT\" ]; then chmod +x \"scripts/$SCRIPT\" && \"./scripts/$SCRIPT\"; else echo \"Script scripts/$SCRIPT no encontrado.\"; fi"
+}

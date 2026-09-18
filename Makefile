@@ -66,7 +66,7 @@ ps:
 logs:
 	@if [ -f .env ]; then \
 		set -o allexport; source .env; set +o allexport; \
-		CONTAINER="$${COMPOSE_PROJECT_NAME:-ideasfarm}-$${SERVICE_NAME:-website}-$${APP_ENV:-prod}"; \
+		CONTAINER="$${COMPOSE_PROJECT_NAME:-ideasfarm}-$${SERVICE_NAME:-website}-$${DEPLOY_ENV:-prod}"; \
 		docker logs -f "$$CONTAINER"; \
 	fi
 
@@ -83,6 +83,6 @@ install:
 sh:
 	@if [ -f .env ]; then \
 		set -o allexport; source .env; set +o allexport; \
-		CONTAINER="$${COMPOSE_PROJECT_NAME:-ideasfarm}-$${SERVICE_NAME:-website}-$${APP_ENV:-prod}"; \
+		CONTAINER="$${COMPOSE_PROJECT_NAME:-ideasfarm}-$${SERVICE_NAME:-website}-$${DEPLOY_ENV:-prod}"; \
 		docker exec -it "$$CONTAINER" sh; \
 	fi
