@@ -217,11 +217,22 @@ for p in paths:
         dest = f'/var/www/html/{p.replace(\"src/\", \"\", 1)}'
     mount_content += f'      - ./{p}:{dest}\n'
 
+if not os.path.isfile('setup/register.json'):
+    with open('setup/register.json', 'w') as f:
+        f.write('{\n    \"acl\": \"acl-oauth/\",\n    \"geoisys\": \"geoisys/\",\n    \"start\": \"start/\"\n}\n')
+
 mount_content += '''      - ./setup/register.json:/var/www/html/apps/register.json
       - ./setup/.infinyti:/var/www/html/.env
       - /home/mavo/.local/share/mkcert/rootCA.pem:/usr/local/share/ca-certificates/mkcert-rootCA.crt:ro
       - ${SSH_HOST:-/home/mavo}/.ssh:/root/.ssh-host:ro
 '''
+
+# Ensure mount targets exist as files so Docker does not create them as directories
+os.makedirs('src/infinyti', exist_ok=True)
+open('src/infinyti/.env', 'a').close()
+os.makedirs('src/infinyti/apps', exist_ok=True)
+open('src/infinyti/apps/register.json', 'a').close()
+
 with open('docker-compose.mount.yml', 'w') as f:
     f.write(mount_content)
 "
