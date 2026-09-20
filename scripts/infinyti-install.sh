@@ -20,9 +20,15 @@ COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-ideasfarm}"
 SERVICE_NAME="${SERVICE_NAME:-acl-server}"
 DEPLOY_ENV="${DEPLOY_ENV:-prod}"
 
-CONTAINER="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${DEPLOY_ENV}"
+if [[ "$COMPOSE_PROJECT_NAME" == *"-${SERVICE_NAME}-${DEPLOY_ENV}"* ]]; then CONTAINER="$COMPOSE_PROJECT_NAME"; else CONTAINER="${COMPOSE_PROJECT_NAME}-${SERVICE_NAME}-${DEPLOY_ENV}"; fi
 
 echo "🚀 Iniciando instalación y configuración del entorno Infinyti..."
+
+# Asegurar que wget esté instalado en el contenedor (requerido por VS Code Dev Containers)
+if [[ "$DEPLOY_ENV" == "dev" ]] && ! docker exec -i $CONTAINER command -v wget >/dev/null 2>&1; then
+    echo "📦 Instalando wget en el contenedor..."
+    docker exec -i $CONTAINER sh -c "apt-get update && apt-get install -y wget"
+fi
 echo "🐳 Contenedor objetivo: $CONTAINER"
 
 # 2. Sincronizar submódulos

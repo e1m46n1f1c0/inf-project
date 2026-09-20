@@ -12,3 +12,4 @@ docker-compose.mount.yml
 
 # Exclude independent docker-php-app repo
 docker-php-app/
+.devcontainer/
