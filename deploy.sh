@@ -275,6 +275,9 @@ env_up() {
   CONTAINER_NAME="$CONTAINER_NAME" \
   docker compose "${COMPOSE_FILES[@]}" -p "$COMPOSE_PROJECT_NAME_ENV" up -d
 
+  echo -e "  ${CYAN}🔐 Asegurando permisos de escritura en public/, temp/ y logs/...${NC}"
+  docker exec "${CONTAINER_NAME}" sh -c 'mkdir -p /var/www/html/public /var/www/html/temp /var/www/html/logs && chmod -R a+rwX /var/www/html/public /var/www/html/temp /var/www/html/logs' || true
+
   if [ "${MOUNT_CODE:-true}" != "true" ]; then
     if [ -d "src" ]; then
       echo -e "  ${YELLOW}🗑️  Eliminando directorio src local (MOUNT_CODE=false)...${NC}"
