@@ -278,6 +278,16 @@ env_up() {
   echo -e "  ${CYAN}🔐 Asegurando permisos de escritura en public/, temp/ y logs/...${NC}"
   docker exec "${CONTAINER_NAME}" sh -c 'mkdir -p /var/www/html/public /var/www/html/temp /var/www/html/logs && chmod -R a+rwX /var/www/html/public /var/www/html/temp /var/www/html/logs' || true
 
+  # Solo en local (dev + *.localhost): confiar en la CA de la infra local (step-ca, "Local-CA"), que firma los
+  # certificados de traefik. Sin ella las llamadas servidor a servidor (back-channel logout a otro deploy) fallan con
+  # "cURL error 60". El contenedor solo trae la raíz de mkcert. Mismo paso que el deploy.sh de Pulse.
+  LOCAL_CA_CERT="${LOCAL_CA_CERT:-/workspace/server/${CLIENT_DOMAIN//./-}-infra/certs/root_ca.crt}"
+  if [ "${DEPLOY_ENV}" = "dev" ] && [[ "${CLIENT_DOMAIN}" == *.localhost ]] && [ -f "$LOCAL_CA_CERT" ]; then
+    echo -e "  ${CYAN}🔐 Instalando la CA local en el contenedor...${NC}"
+    docker cp "$LOCAL_CA_CERT" "${CONTAINER_NAME}:/usr/local/share/ca-certificates/local-ca.crt" >/dev/null 2>&1 || true
+    docker exec "${CONTAINER_NAME}" sh -c 'chmod 644 /usr/local/share/ca-certificates/local-ca.crt && update-ca-certificates' >/dev/null 2>&1 || true
+  fi
+
   if [ "${MOUNT_CODE:-true}" != "true" ]; then
     if [ -d "src" ]; then
       echo -e "  ${YELLOW}🗑️  Eliminando directorio src local (MOUNT_CODE=false)...${NC}"
