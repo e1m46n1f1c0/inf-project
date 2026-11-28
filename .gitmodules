@@ -10,3 +10,11 @@
 	path = src/apps/geoisys
 	url = git@gitlab.com:infinity-plf/geoisys.git
 	branch = develop
+[submodule "src/apps/calendar"]
+	path = src/apps/calendar
+	url = git@gitlab.com:infinity-plf/calendar.git
+	branch = develop
+[submodule "src/apps/pulse"]
+	path = src/apps/pulse
+	url = git@gitlab.com:infinity-plf/pulse.git
+	branch = develop

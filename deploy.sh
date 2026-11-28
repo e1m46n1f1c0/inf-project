@@ -275,8 +275,8 @@ env_up() {
   CONTAINER_NAME="$CONTAINER_NAME" \
   docker compose "${COMPOSE_FILES[@]}" -p "$COMPOSE_PROJECT_NAME_ENV" up -d
 
-  echo -e "  ${CYAN}🔐 Asegurando permisos de escritura en public/, temp/ y logs/...${NC}"
-  docker exec "${CONTAINER_NAME}" sh -c 'mkdir -p /var/www/html/public /var/www/html/temp /var/www/html/logs && chmod -R a+rwX /var/www/html/public /var/www/html/temp /var/www/html/logs' || true
+  echo -e "  ${CYAN}🔐 Asegurando permisos de escritura en public/, temp/, logs/ y storage/...${NC}"
+  docker exec "${CONTAINER_NAME}" sh -c 'mkdir -p /var/www/html/public /var/www/html/temp /var/www/html/logs /var/www/html/storage && chmod -R a+rwX /var/www/html/public /var/www/html/temp /var/www/html/logs /var/www/html/storage' || true
 
   # Solo en local (dev + *.localhost): confiar en la CA de la infra local (step-ca, "Local-CA"), que firma los
   # certificados de traefik. Sin ella las llamadas servidor a servidor (back-channel logout a otro deploy) fallan con
@@ -286,6 +286,21 @@ env_up() {
     echo -e "  ${CYAN}🔐 Instalando la CA local en el contenedor...${NC}"
     docker cp "$LOCAL_CA_CERT" "${CONTAINER_NAME}:/usr/local/share/ca-certificates/local-ca.crt" >/dev/null 2>&1 || true
     docker exec "${CONTAINER_NAME}" sh -c 'chmod 644 /usr/local/share/ca-certificates/local-ca.crt && update-ca-certificates' >/dev/null 2>&1 || true
+
+    # *.localhost resuelve siempre a loopback en libcurl (RFC 6761): reenviar 127.0.0.1:443 y [::1]:443 al gateway
+    # Docker (traefik) para que las llamadas servidor a servidor (intercambio OAuth2) lleguen a la infra local.
+    docker exec "${CONTAINER_NAME}" sh -c '
+      GW_IP=$(ip route | awk "/default/ {print \$3; exit}")
+      if [ -n "$GW_IP" ]; then
+        if [ ! -f /etc/nginx/modules-enabled/50-mod-stream.conf ]; then
+          apt-get update -qq >/dev/null 2>&1 && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq libnginx-mod-stream >/dev/null 2>&1 || true
+        fi
+        if [ -f /etc/nginx/modules-enabled/50-mod-stream.conf ]; then
+          printf "stream {\n    server {\n        listen 127.0.0.1:443;\n        listen [::1]:443;\n        proxy_pass %s:443;\n    }\n}\n" "$GW_IP" > /etc/nginx/modules-enabled/99-localhost-443-proxy.conf
+          nginx -t >/dev/null 2>&1 && nginx -s reload >/dev/null 2>&1 || true
+        fi
+      fi
+    ' || true
   fi
 
   if [ "${MOUNT_CODE:-true}" != "true" ]; then
